@@ -3,20 +3,39 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@m3-moretv/react-code-input": "^1.1.6",
+    "@material-ui/core": "^4.8.3",
+    "@material-ui/icons": "^4.5.1",
+    "flyd": "^0.2.8",
+    "jsbarcode": "^3.11.0",
+    "mergerino": "^0.4.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.3.0",
+    "styled-components": "^4.4.1",
+    "typescript": "^3.7.4",
+    "utility-types": "^3.10.0"
+  },
+  "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
     "@types/jest": "^24.0.25",
+    "@types/mergerino": "^0.4.0",
     "@types/node": "^12.12.24",
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-scripts": "3.3.0",
-    "typescript": "^3.7.4"
+    "@types/react-router": "^5.1.4",
+    "@types/react-router-dom": "^5.1.3",
+    "@types/styled-components": "^4.4.2"
   },
+  "engines": {
+    "node": "10.x"
+  } ,
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=3301 REACT_APP_API_BASE_PATH=localhost:3300 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

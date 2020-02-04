@@ -21,6 +21,8 @@ import {routes} from "../../contants/routes";
 import RoundedButton from "../../components/Buttons";
 import FriendCard from "../../components/FriendCard";
 import Preloader from "../../components/Preloader";
+import {removeLastSlash} from "../../helpers";
+import {Imager} from "../../components/ImageCard";
 
 
 interface GiftDetailsProps extends WithMeiosisProps {
@@ -65,13 +67,18 @@ class GiftDetails extends React.Component<GiftDetailsProps, GiftDetailsState> {
     onGetCampaignByIdSuccess = (data: any) => {
         this.setState({ giftData: data.result }, () => {
             const { campaignId } = this.state;
-            apiService.ApiCall.GetVoucherListByCampaignId({
+            /*apiService.ApiCall.GetVoucherListByCampaignId({
                 campaignId,
                 onSuccess: this.onGetVoucherListByCampaignIdSuccess,
+            });*/
+            apiService.ApiCall.GetFirstVoucherByCampaignId({
+                campaignId,
+                onSuccess: this.onGetFirstVoucherByCampaignIdSuccess,
             });
         });
     };
 
+    /*
     onGetVoucherListByCampaignIdSuccess = (data: any) => {
         const voucherList = data.result.reduce((filtered: any[], voucher: any) => {
             if(!!voucher.active) {
@@ -82,6 +89,18 @@ class GiftDetails extends React.Component<GiftDetailsProps, GiftDetailsState> {
 
         this.setState({
             selectedVoucher: voucherList[0],
+            isLoading: false,
+        }, () => {
+            JsBarcode('#barcode', this.state.selectedVoucher, {
+                displayValue: false
+            });
+        });
+    };
+    */
+
+    onGetFirstVoucherByCampaignIdSuccess = (data: any) => {
+        this.setState({
+            selectedVoucher: data.result.code,
             isLoading: false,
         }, () => {
             JsBarcode('#barcode', this.state.selectedVoucher, {
@@ -124,7 +143,11 @@ class GiftDetails extends React.Component<GiftDetailsProps, GiftDetailsState> {
                                 <label>
                                     <input type="checkbox" />
                                     <div className="gift-card">
-                                        <div className="card front" style={{backgroundImage: `url(${apiService.apiBasePath + giftData.imagePath})`}} />
+                                        <Imager
+                                            className="card front"
+                                            title={'front'}
+                                            imagePath={removeLastSlash(apiService.apiBasePath) + giftData.iconPath}
+                                        />
                                         <div className="card back">
                                             <div className="barcode">
                                                 <div className="barcode-holder">

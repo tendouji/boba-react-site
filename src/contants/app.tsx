@@ -20,6 +20,8 @@ import {
 } from "../assets";
 
 const otpResendTimeout = 30;
+const snackBarLifeSpan = 5;
+const snackBarShowDelay = 0.5;
 
 const sessionStorageKey: {[key: string]: string} = {
     user: 'userSessionObj',
@@ -106,6 +108,8 @@ const socialShareList = [{
 export {
     sessionStorageKey,
     otpResendTimeout,
+    snackBarLifeSpan,
+    snackBarShowDelay,
     categoryLinks,
     menuBarLinks,
     brandDetailsLinks,

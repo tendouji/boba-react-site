@@ -11,7 +11,7 @@ import {
     commonStyle
 } from "../../contants/layout";
 import ImageCard from "../ImageCard";
-
+import {ProfileDefault} from "../../assets";
 
 
 type FriendCardProps = {
@@ -27,7 +27,7 @@ const FriendCard: React.FC<FriendCardProps> = ({name, imagePath, isURL, urlPath 
         <ImageCard
             size={cardSizeLabels.SmallSquare}
             title={name}
-            imagePath={imagePath || ''}
+            imagePath={(!!imagePath && imagePath !== '' ? imagePath : String(ProfileDefault))}
         />
         <div className="caption" style={{width: `${cardSizes[cardSizeLabels.SmallSquare][1]}rem`}}>
             {name}

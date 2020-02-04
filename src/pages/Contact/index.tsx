@@ -3,9 +3,8 @@ import styled from 'styled-components';
 
 import AddIcon from '@material-ui/icons/Add';
 
-import PageWithMenu from "../../components/PageWithMenu";
 import withMeiosis, {WithMeiosisProps} from "../../components/HOC";
-
+import PageWithMenu from "../../components/PageWithMenu";
 import {apiService} from "../../services/api";
 import {
     borderRadius,
@@ -13,17 +12,14 @@ import {
     cardSizes,
     colors,
     commonStyle,
-    elementSizes,
     fontSizes,
     gaps,
 } from "../../contants/layout";
-import {Link} from 'react-router-dom';
-import {GiftCorner} from '../../assets';
-import HorizontalScroller from "../../components/HorizontalScroller";
-import ImageCard from "../../components/ImageCard";
 import {routes} from "../../contants/routes";
+
 import RoundedButton from "../../components/Buttons";
-import FriendCard from "../../components/FriendCard";
+// import ImageCard from "../../components/ImageCard";
+// import FriendCard from "../../components/FriendCard";
 
 
 
@@ -75,10 +71,11 @@ class Contact extends React.Component<ContactProps, ContactState> {
         if(friendNo === '' || friendName === '') {
             const {globalActions} = this.props;
 
-            globalActions.updateSnackBar(
-                true,
-                `Phone number and name are required!`,
-                false);
+            globalActions.updateSnackBar({
+                isShown: true,
+                message: `Phone number and name are required!`,
+                hasCTA: false,
+            });
             return;
         }
 

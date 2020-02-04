@@ -14,6 +14,8 @@ import {
 } from "../../contants/layout";
 import RoundedButton from "../../components/Buttons";
 import Preloader from "../../components/Preloader";
+import {Imager} from "../../components/ImageCard";
+import {removeLastSlash} from "../../helpers";
 
 
 interface ThankYouProps extends WithMeiosisProps {
@@ -23,6 +25,7 @@ interface ThankYouProps extends WithMeiosisProps {
 interface ThankYouState extends WithMeiosisProps {
     giftObj: any;
     voucherInfo: any;
+    voucherImagePath: string;
     isLoading: boolean;
 }
 
@@ -33,6 +36,7 @@ class ThankYou extends React.Component<ThankYouProps, ThankYouState> {
         this.state = {
             giftObj: {},
             voucherInfo: {},
+            voucherImagePath: '',
             isLoading: true,
             ...props.globalStates!
         };
@@ -48,9 +52,22 @@ class ThankYou extends React.Component<ThankYouProps, ThankYouState> {
     onBuyShareVoucherFinalisedSuccess = (data: any) => {
         this.setState({ giftObj: data.giftObj });
 
-        apiService.ApiCall.GetVoucherById({
-            voucherNo: data.giftObj.voucherNo,
-            onSuccess: this.onGetVoucherByIdSuccess,
+        apiService.ApiCall.GetCampaignById({
+            campaignId: data.giftObj.campaignId,
+            onSuccess: (data2: any) => {
+                this.setState({ voucherImagePath: data2.result.imagePath});
+
+                apiService.ApiCall.GetVoucherById({
+                    voucherNo: data.giftObj.voucherNo,
+                    onSuccess: (data3: any) => {
+                        this.setState({
+                            voucherInfo: data3.result,
+                            isLoading: false,
+                        });
+                    },
+                    onError: this.onGetVoucherByIdError,
+                });
+            },
         });
     };
 
@@ -58,19 +75,19 @@ class ThankYou extends React.Component<ThankYouProps, ThankYouState> {
         console.log('error');
     };
 
-    onGetVoucherByIdSuccess = (data: any) => {
-        this.setState({
-            voucherInfo: data.result,
-            isLoading: false,
-        });
-    };
-
     onGetVoucherByIdError = (data: any) => {
         console.log('error');
     };
 
     render() {
-        const { giftObj, voucherInfo, isLoading } = this.state;
+        const {
+            giftObj,
+            voucherInfo,
+            voucherImagePath,
+            isLoading
+        } = this.state;
+
+        console.log(giftObj, voucherInfo, voucherImagePath);
 
         return (
             <PageWithMenu>
@@ -82,7 +99,11 @@ class ThankYou extends React.Component<ThankYouProps, ThankYouState> {
 
                         <div className="gift-image-resizer">
                             <div className="gift-image-holder">
-                                <div className="gift-card" style={{backgroundImage: `url($ {apiService.apiBasePath + giftData.imagePath})`}} />
+                                <Imager
+                                    className="gift-card"
+                                    title={voucherInfo.campaign}
+                                    imagePath={removeLastSlash(apiService.apiBasePath) + voucherImagePath}
+                                />
                             </div>
                         </div>
 

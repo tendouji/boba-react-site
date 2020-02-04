@@ -1,12 +1,12 @@
 /** TODO:
  * - OTP api
  * - if loggedin, LoginPage RegisterPage to go to Main page
- * - Add general photo placeholder for FriendCard image
  * - check after redeem, if voucher code is active or inactive
  * - add preloader / check all error handling for api and form validation
  * - clear all console.log
- * - hide snackbar if user change route / add auto close
- * - retrieve voucher 1 by 1 for gift details
+ * - change window.location to history.push / replace!
+ * - check how does voucherify barcode works
+ * - snackbarInfo to be grouped?
  **/
 
 import React from 'react';
@@ -19,6 +19,7 @@ import {
 
 import SnackBar from './components/SnackBar';
 import withMeiosis, {WithMeiosisProps} from "./components/HOC";
+
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Main from "./pages/Main";
@@ -29,6 +30,7 @@ import {routes} from "./contants/routes";
 import ShareGift from './pages/ShareGift';
 import Contact from './pages/Contact';
 import ThankYou from './pages/ThankYou';
+import Share from './pages/Share';
 
 
 declare global {
@@ -51,7 +53,7 @@ interface AppState extends WithMeiosisProps {
 class App extends React.Component<AppProps, AppState> {
     onSnackBarClose = () => {
         const { globalActions } = this.props;
-        globalActions.updateSnackBar(false, '');
+        globalActions.updateSnackBar({ isShown: false, message: '' });
     };
 
     render() {
@@ -62,14 +64,7 @@ class App extends React.Component<AppProps, AppState> {
                 <ScreenWrapper className="app-screen">
                     <Switch>
                         <Route exact path={routes.HOME} component={Main} />
-                        <Route path={routes.SIGNIN} component={Login} />
-                        <Route path={routes.SIGNUP} component={Register} />
-                        <Route path={routes.MAIN} component={Main} />
-                        <Route path={routes.CONTACT} component={Contact} />
-                        <Route path={routes.BRAND_DETAILS + '/:id'} component={BrandDetails} />
-                        <Route path={routes.GIFT_DETAILS + '/:id'} component={GiftDetails} />
-                        <Route path={routes.SHARE_GIFT + '/:friendId'} component={ShareGift} />
-                        <Route path={routes.THANK_YOU} component={ThankYou} />
+                        <Route path={routes.HOME + ':linkId'} component={RoutingComponent} />
                     </Switch>
 
                     <SnackBar
@@ -85,6 +80,24 @@ class App extends React.Component<AppProps, AppState> {
         );
     }
 }
+
+const RoutingComponent: React.FC<{match: any}> = ({match}) => (<>
+    <Switch>
+        <Route path={routes.SIGNIN} component={Login} />
+        <Route path={routes.SIGNIN + '/:id'} component={Login} />
+        <Route exact path={routes.SIGNUP} component={Register} />
+        <Route path={routes.SIGNUP + '/:id'} component={Register} />
+        <Route path={routes.MAIN} component={Main} />
+        <Route path={routes.CONTACT} component={Contact} />
+        <Route path={routes.BRAND_DETAILS + '/:id'} component={BrandDetails} />
+        <Route path={routes.GIFT_DETAILS + '/:id'} component={GiftDetails} />
+        <Route path={routes.SHARE_GIFT + '/:friendId'} component={ShareGift} />
+        <Route path={routes.THANK_YOU} component={ThankYou} />
+        <Route path="*" render={(props: any) => <Share routeParams={{
+            linkId: match.params.linkId
+        }} {...props} />} />
+    </Switch>
+</>);
 
 export default withMeiosis(App);
 

@@ -2,6 +2,8 @@ import * as Logo from './image/logo.png';
 import * as BGCurve from './image/bg.png';
 import * as BGLogo from './image/bg-logo.png';
 import * as GiftCorner from './image/gift-corner.png';
+import * as ProfileDefault from './image/placeholder-profile.png';
+import * as ProductDefault from './image/placeholder-voucher.png';
 import { IconCalendar } from './svg/calendar';
 import { IconFriends } from './svg/friends';
 import { IconGift } from './svg/gift';
@@ -27,6 +29,9 @@ export {
     BGCurve,
     BGLogo,
     GiftCorner,
+
+    ProfileDefault,
+    ProductDefault,
 
     GiftDetailSample,
     GiftBarcodeSample,

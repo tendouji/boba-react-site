@@ -1,21 +1,17 @@
 import React from 'react';
-import {Link} from "react-router-dom";
 import styled from 'styled-components';
 import CodeInput, {Types} from "@m3-moretv/react-code-input";
 
-// import AccountCircleOutlined from '@material-ui/icons/AccountCircleOutlined';
 import {
     colors,
     fontSizes,
     gaps
 } from "../../contants/layout";
-import {routes} from "../../contants/routes";
 import {otpResendTimeout} from "../../contants/app";
-import {apiService} from "../../services/api";
+import {pinVerifyInstruction} from "../../contants/text";
 import {maskPhone} from "../../helpers";
 
 import RoundedButton from "../Buttons";
-import {pinVerifyInstruction} from "../../contants/text";
 
 
 type PinInputProps = {

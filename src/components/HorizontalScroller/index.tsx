@@ -1,6 +1,6 @@
 import React  from 'react';
 import styled from 'styled-components';
-import {commonStyle, gaps, mediaBreakpoints} from "../../contants/layout";
+import {commonStyle, gaps} from "../../contants/layout";
 
 
 type HorizontalScrollerProps = {
@@ -11,10 +11,6 @@ type HorizontalScrollerProps = {
 }
 
 class HorizontalScroller extends React.Component<HorizontalScrollerProps> {
-    constructor(props:HorizontalScrollerProps) {
-        super(props);
-    }
-
     componentDidMount() {
         const { onRef } = this.props;
         if(!!onRef) onRef(this);
@@ -42,7 +38,7 @@ class HorizontalScroller extends React.Component<HorizontalScrollerProps> {
             >
                 <div className="scroller">
                     {!!sidePadded && <div className="filler" />}
-                    {this.props.children}
+                    {children}
                     {!!sidePadded && <div className="filler" />}
                 </div>
             </HorizontalScrollerWrapper>

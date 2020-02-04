@@ -2,7 +2,6 @@ import React from "react";
 import flyd from "flyd";
 import globalState, {GlobalStateInitialType} from "../../services/globalState";
 import merge from "mergerino";
-// import {Subtract} from "utility-types";
 import {apiService} from "../../services/api";
 import {routes} from "../../contants/routes";
 import {pageComponentList, sessionStorageKey} from "../../contants/app";
@@ -12,7 +11,7 @@ import {getSessionStorage} from "../../helpers";
 const update: flyd.Stream<unknown> = flyd.stream();
 const states = flyd.scan(
     (state: GlobalStateInitialType, patch: any) => merge(state, patch),
-    globalState.initial,
+    globalState.GlobalInitialState,
     update
 );
 const actions = globalState.Actions(update);
@@ -23,10 +22,13 @@ export interface WithMeiosisProps {
     globalActions?: any,
 }
 
+type AnyProps = {
+    [key: string]: any
+}
 
 const withMeiosis = <P extends WithMeiosisProps>(Component: React.ComponentType<P>) => {
     // class WithMeiosis extends React.Component<Subtract<P, WithMeiosisProps>, GlobalStateInitialType> {
-    class WithMeiosis extends React.Component<P & WithMeiosisProps, GlobalStateInitialType> {
+    class WithMeiosis extends React.Component<P & WithMeiosisProps & AnyProps, GlobalStateInitialType> {
         private _isMounted: boolean;
 
         constructor(props: P) {
@@ -41,11 +43,11 @@ const withMeiosis = <P extends WithMeiosisProps>(Component: React.ComponentType<
 
             this.checkUserInfo();
 
-            states.map((state: GlobalStateInitialType) => {
-                this._isMounted && this.setState(state);
-            });
+            states.map((state: GlobalStateInitialType) => this._isMounted && this.setState(state));
 
             if(pageComponentList.indexOf(Component.name) > -1) { // NOTE: only check session if component is page
+                this.redirectToSignIn();
+
                 apiService.ApiCall.HasSession({
                     onSuccess: this.onCheckSessionSuccess,
                     onError: this.onCheckSessionFailed,
@@ -65,10 +67,11 @@ const withMeiosis = <P extends WithMeiosisProps>(Component: React.ComponentType<
         };
 
         redirectToSignIn = () => {
-            if( window.location.pathname !== routes.HOME ||
-                window.location.pathname !== routes.SIGNIN ||
-                window.location.pathname !== routes.SIGNUP) {
-                window.location.href = routes.SIGNIN;
+            const { history } = this.props;
+            if( history.location.pathname !== routes.HOME ||
+                history.location.pathname !== routes.SIGNIN ||
+                history.location.pathname !== routes.SIGNUP) {
+                history.replace({ pathname: routes.SIGNIN });
             }
         };
 

@@ -21,9 +21,12 @@ const apiService = {
             VoucherById                 : this.apiBasePath + 'api/web/product/voucher/get',
             GetCardDesigns              : this.apiBasePath + 'api/web/product/card-design/all',
             VoucherListByCampaignId     : this.apiBasePath + 'api/web/product/voucher/list',
+            FirstVoucherByCampaignId    : this.apiBasePath + 'api/web/product/voucher/first',
             BuyShareVoucher             : this.apiBasePath + 'api/web/product/voucher/buy-share',
             BuyShareVoucherFinalised    : this.apiBasePath + 'api/web/product/voucher/buy-share-complete',
             AddContact                  : this.apiBasePath + 'api/web/friend/add',
+            ActionDataByLinkId          : this.apiBasePath + 'api/public/action',
+            CampaignLabelImageById      : this.apiBasePath + 'api/public/campaign',
         }
     },
 
@@ -217,6 +220,47 @@ const apiService = {
                 }).then((response: any) => !!response.error ? onError(response) : onSuccess(response)
                 ).catch((error: any) => onError(error));
             },
+            GetFirstVoucherByCampaignId: (opts: ApiType) => {
+                const onSuccess = !!opts.onSuccess
+                    ? opts.onSuccess
+                    : (data: any) => defaultSuccessHandler('GetFirstVoucherByCampaignId', data);
+
+                const onError = !!opts.onError
+                    ? opts.onError
+                    : (data: any) => defaultErrorHandler('GetFirstVoucherByCampaignId', data);
+
+                this.fetchData(this.ApiAddress.FirstVoucherByCampaignId + '/' + opts.campaignId, {
+                    credentials: 'include',
+                }).then((response: any) => !!response.error ? onError(response) : onSuccess(response)
+                ).catch((error: any) => onError(error));
+            },
+            GetActionDataByLinkId: (opts: ApiType) => {
+                const onSuccess = !!opts.onSuccess
+                    ? opts.onSuccess
+                    : (data: any) => defaultSuccessHandler('GetActionDataByLinkId', data);
+
+                const onError = !!opts.onError
+                    ? opts.onError
+                    : (data: any) => defaultErrorHandler('GetActionDataByLinkId', data);
+
+                this.fetchData(this.ApiAddress.ActionDataByLinkId + '/' + opts.linkId, {}
+                ).then((response: any) => !!response.error ? onError(response) : onSuccess(response)
+                ).catch((error: any) => onError(error));
+            },
+            GetCampaignLabelImageById: (opts: ApiType) => {
+                const onSuccess = !!opts.onSuccess
+                    ? opts.onSuccess
+                    : (data: any) => defaultSuccessHandler('GetCampaignLabelImageById', data);
+
+                const onError = !!opts.onError
+                    ? opts.onError
+                    : (data: any) => defaultErrorHandler('GetCampaignLabelImageById', data);
+
+                this.fetchData(this.ApiAddress.CampaignLabelImageById + '/' + opts.campaignId, {}
+                ).then((response: any) => !!response.error ? onError(response) : onSuccess(response)
+                ).catch((error: any) => onError(error));
+            },
+
             AddContact: (opts: ApiType) => {
                 const onSuccess = !!opts.onSuccess
                     ? opts.onSuccess
@@ -266,7 +310,7 @@ const apiService = {
                     method: 'POST',
                     credentials: 'include',
                     data: {
-                        campaignId: opts.campaignID,
+                        campaignId: opts.campaignId,
                         voucherNo: opts.voucherNo,
                         channel: opts.channel, // phone, email, whatsapp, boba
                         from: {

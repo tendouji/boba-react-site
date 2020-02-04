@@ -12,7 +12,7 @@ import {
     mediaBreakpoints
 } from "../../contants/layout";
 import {routes} from "../../contants/routes";
-import {categoryLinks} from "../../contants/app";
+import {categoryLinks, snackBarShowDelay} from "../../contants/app";
 import PageWithMenu from "../../components/PageWithMenu";
 import HorizontalScroller from "../../components/HorizontalScroller";
 import withMeiosis, {WithMeiosisProps} from "../../components/HOC";
@@ -46,50 +46,6 @@ class Main extends React.Component<MainProps, MainState> {
         apiService.ApiCall.GetHomePageData({
             onSuccess: this.onGetHomePageDataSuccess,
         });
-
-        const { history, globalActions } = this.props;
-        const locationState = history.location.state;
-
-        if(!!locationState) {
-            if(!!locationState.userInfo) {
-                const ui = locationState.userInfo;
-
-                globalActions.updateUserInfo({
-                    username: ui.username,
-                    id: ui._id,
-                    voucherifyId: ui.voucherifyId,
-                    sourceId: ui.sourceId,
-                    displayName: ui.displayName,
-                    email: ui.email,
-                    imagePath: ui.imagePath || '',
-                    createdAt: ui.createdAt,
-                    friends: ui.friends,
-                    notification: ui.notification,
-                    giftList: ui.giftList,
-                    metadata: ui.metadata,
-                });
-
-                if( !locationState.isRegister &&
-                    !!ui.metadata &&
-                    ui.metadata['registration-status'] === 'incomplete'
-                ) {
-                    globalActions.updateSnackBar(
-                        true,
-                        `Hello, it seems your profile information is still incomplete! Update your Profile for us to know you better!`,
-                        true,
-                        'Go to Profile',
-                        this.goToProfile);
-                }
-            }
-            if(!!locationState.isRegister) { // NOTE: is coming from new register
-                globalActions.updateSnackBar(
-                    true,
-                    `Welcome to Boba.Gift! Update your Profile for us to know you better!`,
-                    true,
-                    'Go to Profile',
-                    this.goToProfile);
-            }
-        }
     }
 
     goToProfile = () => {
@@ -101,6 +57,55 @@ class Main extends React.Component<MainProps, MainState> {
         this.setState({
             homeData: data.result.homepage,
             isLoading: false,
+        }, () => {
+            setTimeout(() => {
+                // NOTE: page loaded,let's check on this prompts
+                const { history, globalActions } = this.props;
+                const locationState = history.location.state;
+
+                if(!!locationState) {
+                    if(!!locationState.userInfo) {
+                        const ui = locationState.userInfo;
+
+                        globalActions.updateUserInfo({
+                            username: ui.username,
+                            id: ui._id,
+                            voucherifyId: ui.voucherifyId,
+                            sourceId: ui.sourceId,
+                            displayName: ui.displayName,
+                            email: ui.email,
+                            imagePath: ui.imagePath || '',
+                            createdAt: ui.createdAt,
+                            friends: ui.friends,
+                            notification: ui.notification,
+                            giftList: ui.giftList,
+                            metadata: ui.metadata,
+                        });
+
+                        if( !locationState.isRegister &&
+                            !!ui.metadata &&
+                            ui.metadata['registration-status'] === 'incomplete'
+                        ) {
+                            globalActions.updateSnackBar({
+                                isShown: true,
+                                message: `Hello, it seems your profile information is still incomplete! Update your Profile for us to know you better!`,
+                                hasCTA: true,
+                                CTAButtonLabel: 'Go to Profile',
+                                CTAClickHandler: this.goToProfile
+                            });
+                        }
+                    }
+                    if(!!locationState.isRegister) { // NOTE: is coming from new register
+                        globalActions.updateSnackBar({
+                            isShown: true,
+                            message: `Welcome to Boba.Gift! Update your Profile for us to know you better!`,
+                            hasCTA: true,
+                            CTAButtonLabel: 'Go to Profile',
+                            CTAClickHandler: this.goToProfile
+                        });
+                    }
+                }
+            }, snackBarShowDelay * 1000);
         });
     };
 

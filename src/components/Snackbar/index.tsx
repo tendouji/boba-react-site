@@ -10,6 +10,7 @@ import {
 } from "../../contants/layout";
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import RoundedButton from "../Buttons";
+import {snackBarLifeSpan} from "../../contants/app";
 
 
 interface SnackBarProps {
@@ -22,12 +23,18 @@ interface SnackBarProps {
 }
 
 interface SnackBarState {
-    [key: string]: any,
+    show: boolean,
 }
 
 class SnackBar extends React.Component<SnackBarProps, SnackBarState> {
+    private showTimer: any = null;
+
     constructor(props: SnackBarProps) {
         super(props);
+
+        this.state = {
+            show: false
+        }
     }
 
     componentDidMount() {
@@ -38,11 +45,12 @@ class SnackBar extends React.Component<SnackBarProps, SnackBarState> {
     componentDidUpdate(prevProps: SnackBarProps) {
         if(prevProps.isShown !== this.props.isShown) {
             this.setState({ show: this.props.isShown });
-            /*setTimeout(() => {
-                if(this.state.isShown) {
-                    this.closeHandler();
-                }
-            }, snackBarLifeSpan);*/
+        }
+
+        if(!!this.props.isShown && !!this.state.show) {
+            // NOTE: already open and is being triggered to open, we reset the timeout
+            clearTimeout(this.showTimer);
+            this.showTimer = setTimeout(this.onCloseHandler, snackBarLifeSpan * 1000);
         }
     }
 
@@ -62,8 +70,8 @@ class SnackBar extends React.Component<SnackBarProps, SnackBarState> {
 
 
     render() {
+        const { show } = this.state;
         const {
-            isShown,
             content,
             hasCTA,
             CTAButtonLabel
@@ -72,7 +80,7 @@ class SnackBar extends React.Component<SnackBarProps, SnackBarState> {
         return (
             <SnackBarWrapper className={[
                 "snack-bar",
-                (!!isShown ? ' show' : '')
+                (!!show ? ' show' : '')
             ].join('')}>
                 <div className="content"><span dangerouslySetInnerHTML={{__html: content}} /></div>
                 { !!hasCTA && (

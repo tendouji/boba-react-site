@@ -20,6 +20,19 @@ const setSessionStorage = (key: string, obj: string) => sessionStorage.setItem(k
 const getSessionStorage = (key: string): string => sessionStorage.getItem(key) || '{}';
 const clearSessionStorageByKey = (key: string) => sessionStorage.removeItem(key);
 
+const checkImageURL = (urlPath: string) => {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+            resolve({loaded: true});
+        };
+        img.onerror = () => {
+            resolve({loaded: false});
+        };
+        img.src = urlPath;
+    });
+};
+
 
 export {
     maskPhone,
@@ -27,4 +40,5 @@ export {
     setSessionStorage,
     getSessionStorage,
     clearSessionStorageByKey,
+    checkImageURL,
 }

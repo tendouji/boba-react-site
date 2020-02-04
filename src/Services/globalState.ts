@@ -23,11 +23,32 @@ export type UserInfoType = {
     metadata: any,
 }
 
+export type SnackBarInfoType = {
+    isShown: boolean,
+    message: string,
+    hasCTA?: boolean,
+    CTAButtonLabel?: string,
+    CTAClickHandler?: () => void,
+    closeHandler?: () => void,
+}
+
+export type ShareInfoType = {
+    isShare: boolean,
+    _id: string,
+    code: string,
+    to: string[],
+    from: string,
+    status: string,
+    type: string,
+    createdAt: string,
+    metadata: any,
+}
+
 export type GlobalStateInitialType = {
     userInfo: UserInfoType,
     curPage: string,
     isLoggedIn: boolean,
-
+    shareInfo: ShareInfoType,
     showSnackBar: boolean,
     snackBarMessage: string,
     snackBarHasCTA: boolean,
@@ -37,18 +58,14 @@ export type GlobalStateInitialType = {
 }
 
 export type GlobalActionType = {
-    updateSnackBar: (   isShown: boolean,
-                        message: string,
-                        hasCTA?: boolean,
-                        CTAButtonLabel?: string,
-                        CTAClickHandler?: () => void,
-                        closeHandler?: () => void) => void,
+    updateSnackBar: (info: SnackBarInfoType) => void,
     updateLoggedSession: (val: boolean) => void,
     updateCurPage: (val: PageType) => void,
     updateUserInfo: (info: UserInfoType) => void,
+    updateShareInfo: (info: ShareInfoType) => void,
 }
 
-const initial: GlobalStateInitialType = {
+export const GlobalInitialState: GlobalStateInitialType = {
     userInfo: {
         username: '',
         id: '',
@@ -63,6 +80,17 @@ const initial: GlobalStateInitialType = {
         giftList: [],
         metadata: null,
     },
+    shareInfo: {
+        isShare: false,
+        _id: '',
+        code: '',
+        to: [],
+        from: '',
+        status: '',
+        type: '',
+        createdAt: '',
+        metadata: null,
+    },
     curPage: PageType.Home,
     isLoggedIn: false,
     showSnackBar: false,
@@ -74,23 +102,17 @@ const initial: GlobalStateInitialType = {
 };
 
 const globalState: any = {
-    initial,
+    GlobalInitialState,
     Actions: (update: flyd.Stream<unknown>): GlobalActionType => {
         return {
-            updateSnackBar: (   isShown: boolean,
-                                message: string,
-                                hasCTA?: boolean,
-                                CTAButtonLabel?: string,
-                                CTAClickHandler?: () => void,
-                                closeHandler?: () => void
-                            ) => {
+            updateSnackBar: (info: SnackBarInfoType) => {
                 update((state: GlobalStateInitialType) => {
-                    state.showSnackBar = isShown;
-                    state.snackBarMessage = !!isShown ? message : '';
-                    state.snackBarHasCTA = !!hasCTA;
-                    state.snackBarCTAButtonLabel = !!CTAButtonLabel ? CTAButtonLabel : '';
-                    state.snackBarCTAClickHandler = !!CTAClickHandler ? CTAClickHandler : () => null;
-                    state.snackBarCloseHandler= !!closeHandler ? closeHandler : () => null;
+                    state.showSnackBar = info.isShown;
+                    state.snackBarMessage = !!info.isShown ? info.message : '';
+                    state.snackBarHasCTA = !!info.hasCTA;
+                    state.snackBarCTAButtonLabel = !!info.CTAButtonLabel ? info.CTAButtonLabel : '';
+                    state.snackBarCTAClickHandler = !!info.CTAClickHandler ? info.CTAClickHandler : () => null;
+                    state.snackBarCloseHandler= !!info.closeHandler ? info.closeHandler : () => null;
 
                     return state;
                 });
@@ -108,9 +130,14 @@ const globalState: any = {
                 });
             },
             updateUserInfo: (info: UserInfoType) => {
-                console.log('Updating user info');
                 update((state: GlobalStateInitialType) => {
                     state.userInfo = info;
+                    return state;
+                });
+            },
+            updateShareInfo: (info: ShareInfoType) => {
+                update((state: GlobalStateInitialType) => {
+                    state.shareInfo = info;
                     return state;
                 });
             }

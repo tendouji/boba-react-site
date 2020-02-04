@@ -27,8 +27,10 @@ interface RegisterState extends WithMeiosisProps {
     enableSignUpButton: boolean,
     isVerifyCode: boolean,
     curPhone: string,
+    linkId: string,
+    giftImage: string,
+    [key: string]: any;
 }
-
 
 class Register extends React.Component<RegisterProps, RegisterState> {
     private userNameRef: React.RefObject<HTMLInputElement>;
@@ -41,6 +43,8 @@ class Register extends React.Component<RegisterProps, RegisterState> {
             enableSignUpButton: false,
             isVerifyCode: false,
             curPhone: '',
+            linkId: '',
+            giftImage: '',
             ...props.globalStates!
         };
 
@@ -48,12 +52,16 @@ class Register extends React.Component<RegisterProps, RegisterState> {
     }
 
     componentDidMount() {
-        console.log(this.props);
+        const { globalStates } = this.props;
+
+        this.setState({
+            linkId: globalStates!.shareInfo.code,
+            giftImage: globalStates!.shareInfo.metadata.voucherData.campaignImagePath,
+        });
     };
 
     clickHandler = () => {
         const usernameVal = this.userNameRef.current!.value;
-
         this.setState({ curPhone: usernameVal });
 
         apiService.ApiCall.RegisterSMS({
@@ -76,12 +84,13 @@ class Register extends React.Component<RegisterProps, RegisterState> {
 
         switch(data.status.message) {
             case 'Phone already registered':
-                globalActions.updateSnackBar(
-                    true,
-                    `The number you input is already registered. Would you like to Sign In instead?`,
-                    true,
-                    'Sign In',
-                    this.goToSignIn);
+                globalActions.updateSnackBar({
+                    isShown: true,
+                    message: `The number you input is already registered. Would you like to Sign In instead?`,
+                    hasCTA: true,
+                    CTAButtonLabel: 'Sign In',
+                    CTAClickHandler: this.goToSignIn
+                });
                 break;
             default:
 
@@ -146,12 +155,18 @@ class Register extends React.Component<RegisterProps, RegisterState> {
             enableSignUpButton,
             isVerifyCode,
             curPhone,
+            linkId,
+            giftImage,
         } = this.state;
 
         return (
             <RegisterWrapper className="register-screen">
                 { !isVerifyCode ? (
-                    <AuthForm title="Sign Up">
+                    <AuthForm
+                        title="Sign Up"
+                        actionId={linkId}
+                        giftImage={giftImage}
+                    >
                         <RoundedPanel
                             padded={true}
                             hasShadow={true}

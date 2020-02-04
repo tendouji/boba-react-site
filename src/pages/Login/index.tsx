@@ -15,17 +15,22 @@ import {apiService} from "../../services/api";
 import {BGCurve} from '../../assets';
 import {setSessionStorage} from "../../helpers";
 import {sessionStorageKey} from "../../contants/app";
+import withMeiosis, {WithMeiosisProps} from "../../components/HOC";
 
 
-type LoginProps = {
-    [key: string]: any
+
+interface LoginProps extends WithMeiosisProps {
+    [key: string]: any;
 }
 
-type LoginState = {
+interface LoginState extends WithMeiosisProps {
     isPanelFocused: boolean,
     enableLoginButton: boolean,
     isVerifyCode: boolean,
     curPhone: string,
+    linkId: string,
+    giftImage: string,
+    [key: string]: any;
 }
 
 class Login extends React.Component<LoginProps, LoginState> {
@@ -39,14 +44,27 @@ class Login extends React.Component<LoginProps, LoginState> {
             enableLoginButton: false,
             isVerifyCode: false,
             curPhone: '',
+            linkId: '',
+            giftImage: '',
+            ...props.globalStates!
         };
 
         this.userNameRef = React.createRef();
     }
 
+    componentDidMount() {
+        const { globalStates } = this.props;
+
+        if(!!globalStates!.shareInfo.isShare) {
+            this.setState({
+                linkId: globalStates!.shareInfo.code,
+                giftImage: globalStates!.shareInfo.metadata.voucherData.campaignImagePath,
+            });
+        }
+    }
+
     clickHandler = () => {
         const usernameVal = this.userNameRef.current!.value;
-
         this.setState({ curPhone: usernameVal });
 
         apiService.ApiCall.LoginSMS({
@@ -121,12 +139,18 @@ class Login extends React.Component<LoginProps, LoginState> {
             enableLoginButton,
             isVerifyCode,
             curPhone,
+            linkId,
+            giftImage,
         } = this.state;
 
         return (
             <LoginWrapper className="login-screen">
                 { !isVerifyCode ? (
-                    <AuthForm title="Sign In">
+                    <AuthForm
+                        title="Sign In"
+                        actionId={linkId}
+                        giftImage={giftImage}
+                    >
                         <RoundedPanel
                             padded={true}
                             hasShadow={true}
@@ -144,7 +168,7 @@ class Login extends React.Component<LoginProps, LoginState> {
                             />
                         </RoundedPanel>
                         <div className="cta-area">
-                            <Link to={routes.SIGNUP}>Sign up new account</Link>
+                            <Link to={routes.SIGNUP + (!!linkId && linkId !== '' ? `/${linkId}` : '')}>Sign up new account</Link>
                             <RoundedButton text="Sign In" onClick={this.clickHandler} disabled={!enableLoginButton} />
                         </div>
                     </AuthForm>
@@ -161,7 +185,7 @@ class Login extends React.Component<LoginProps, LoginState> {
     }
 }
 
-export default Login;
+export default withMeiosis(Login);
 
 
 const LoginWrapper = styled.div`
@@ -169,7 +193,7 @@ const LoginWrapper = styled.div`
     height: 100%;
     justify-content: center;
     align-items: center;
-    // background: url(${BGCurve}) center top / contain no-repeat;
+    background: url(${BGCurve}) center top / contain no-repeat;
     
     & .rounded-panel {
         padding: 0 ${gaps.Common} ${gaps.Common};

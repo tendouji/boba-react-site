@@ -22,6 +22,7 @@ import RoundedButton from "../../components/Buttons";
 import {removeLastSlash} from "../../helpers";
 import {routes} from "../../contants/routes";
 import Preloader from "../../components/Preloader";
+import {Imager} from "../../components/ImageCard";
 
 
 interface BrandDetailsProps extends WithMeiosisProps {
@@ -82,7 +83,11 @@ class BrandDetails extends React.Component<BrandDetailsProps, BrandDetailsState>
                             <div className="resizer"><i /></div>
                         </div>
                         <div className="brand-header">
-                            <div className="logo" style={{backgroundImage: `url(${removeLastSlash(apiService.apiBasePath) + brandData.iconPath})`}} />
+                            <Imager
+                                className="logo"
+                                title={brandData.name}
+                                imagePath={removeLastSlash(apiService.apiBasePath) + brandData.iconPath}
+                            />
                             <div className="info">
                                 <h3>{brandData.name}</h3>
                                 <div className="rating">

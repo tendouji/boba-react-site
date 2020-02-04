@@ -46,8 +46,6 @@ const withMeiosis = <P extends WithMeiosisProps>(Component: React.ComponentType<
             states.map((state: GlobalStateInitialType) => this._isMounted && this.setState(state));
 
             if(pageComponentList.indexOf(Component.name) > -1) { // NOTE: only check session if component is page
-                this.redirectToSignIn();
-
                 apiService.ApiCall.HasSession({
                     onSuccess: this.onCheckSessionSuccess,
                     onError: this.onCheckSessionFailed,

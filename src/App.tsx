@@ -4,7 +4,6 @@
  * - check after redeem, if voucher code is active or inactive
  * - add preloader / check all error handling for api and form validation
  * - clear all console.log
- * - change window.location to history.push / replace!
  * - check how does voucherify barcode works
  * - snackbarInfo to be grouped?
  **/

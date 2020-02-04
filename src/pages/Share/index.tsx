@@ -12,6 +12,7 @@ import {routes} from "../../contants/routes";
 
 import withMeiosis, {WithMeiosisProps} from "../../components/HOC";
 import Preloader from "../../components/Preloader";
+import ErrorPanel from "../../components/ErrorPanel";
 
 
 interface ShareProps extends WithMeiosisProps {
@@ -22,6 +23,7 @@ interface ShareState extends WithMeiosisProps {
     linkId: string;
     actionData: ShareInfoType;
     isLoading: boolean;
+    isError: boolean;
     [key: string]: any;
 }
 
@@ -35,6 +37,7 @@ class Share extends React.Component<ShareProps, ShareState> {
             linkId: '',
             actionData: GlobalInitialState.shareInfo,
             isLoading: true,
+            isError: false,
             ...props.globalStates!
         };
 
@@ -47,38 +50,47 @@ class Share extends React.Component<ShareProps, ShareState> {
             apiService.ApiCall.GetActionDataByLinkId({
                 linkId: this.state.linkId,
                 onSuccess: this.onGetActionDataByLinkIdSuccess,
+                onError: this.onGetActionDataByLinkIdError,
             })
         });
     }
 
     onGetActionDataByLinkIdSuccess = (data: any) => {
         this.setState({ actionData: data.result }, () => {
-
-            apiService.ApiCall.GetCampaignLabelImageById({
-                campaignId: data.result.metadata.voucherData.campaignId,
-                onSuccess: (data2: any) => {
-                    const { globalActions } = this.props;
-                    const { actionData } = this.state;
-                    globalActions.updateShareInfo({
-                        isShare: true,
-                        ...actionData,
-                        metadata: {
-                            ...actionData.metadata,
-                            voucherData: {
-                                ...actionData.metadata.voucherData,
-                                campaignImagePath: data2.result.imagePath,
+            if(!!data.result) {
+                apiService.ApiCall.GetCampaignLabelImageById({
+                    campaignId: data.result.metadata.voucherData.campaignId,
+                    onSuccess: (data2: any) => {
+                        const { globalActions } = this.props;
+                        const { actionData } = this.state;
+                        globalActions.updateShareInfo({
+                            isShare: true,
+                            ...actionData,
+                            metadata: {
+                                ...actionData.metadata,
+                                voucherData: {
+                                    ...actionData.metadata.voucherData,
+                                    campaignImagePath: data2.result.imagePath,
+                                }
                             }
-                        }
-                    });
+                        });
 
-                    apiService.ApiCall.HasSession({
-                        onSuccess: this.onCheckSessionSuccess,
-                        onError: this.onCheckSessionFailed,
-                    });
-                },
-            });
+                        apiService.ApiCall.HasSession({
+                            onSuccess: this.onCheckSessionSuccess,
+                            onError: this.onCheckSessionFailed,
+                        });
+                    },
+                });
 
+                return;
+            }
+            this.setState({ isError: true });
         });
+    };
+
+    onGetActionDataByLinkIdError = (data: any) => {
+        this.setState({ isError: true });
+
     };
 
     onCheckSessionSuccess = () => {
@@ -101,10 +113,17 @@ class Share extends React.Component<ShareProps, ShareState> {
     };
 
     render() {
-        const { isLoading } = this.state;
+        const { history } = this.props;
+        const { isLoading, isError } = this.state;
 
         return (<>
-            { !!isLoading ? (
+            { !!isError ? (
+                <ErrorPanel
+                    history={history}
+                    title="Area 404"
+                    message={`We can't seem to find the page you were looking for.<br />You can search our available gifts or return to home page.`}
+                />
+            ) : ( !!isLoading ? (
                 <Preloader isShown={true} message={'redirecting...'} />
             ) : (
                 <ShareWrapper className="share-screen">
@@ -115,7 +134,7 @@ class Share extends React.Component<ShareProps, ShareState> {
                         <RoundedButton text="Sign In" onClick={this.clickHandler} disabled={!enableLoginButton} />
                     </div>*/}
                 </ShareWrapper>
-            )}
+            )) }
         </>);
     }
 }

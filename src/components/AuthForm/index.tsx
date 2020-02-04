@@ -86,7 +86,7 @@ const AuthFormWrapper = styled.div`
         height: ${elementSizes.AuthLogoSmall};
         margin: 0 auto ${gaps.Large};
         background: center / contain no-repeat;
-        background-image: url(${Logo});
+        // background-image: url(${Logo});
         
         @media only screen and (min-width: ${mediaBreakpoints.Medium}) {
             width: ${elementSizes.AuthLogoMedium};

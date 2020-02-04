@@ -63,6 +63,7 @@ const SearchBarWrapper = styled.div`
     & .input-holder {
         height: ${elementSizes.SearchBarHeight};
         background-color: ${colors.White};
+        border: 1px solid ${colors.PinkLight};
         border-radius: ${borderRadius}px;
         
         & input[type="text"] {

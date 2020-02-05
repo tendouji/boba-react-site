@@ -16,6 +16,7 @@ const colors: colorType = {
     GrayDark: '#9B9095',
     Gray: '#d7d7d7',
     GrayLight: '#e5e5e5',
+    GrayLighter: '#f5f5f5',
     Pink: '#FD7162',
     PinkLight: '#FFC8C2',
 
@@ -32,7 +33,7 @@ const elementSizes: {[key: string]: string | number}  = {
     MenuBarHeight: '4rem', // 54px
     SearchBarHeight: '2.5rem', // 40px
     MerchantLogoHeight: '5.625rem', // 90px
-    GiftImageMaxWidth: '31.25rem', // 500px
+    GiftImageMaxWidth: '50rem', // 800px
     GiftImageRatioHeight: 40, // %
 };
 

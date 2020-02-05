@@ -7,12 +7,16 @@ import styled from 'styled-components';
 import {apiService} from "../../services/api";
 import {GlobalInitialState, ShareInfoType} from "../../services/globalState";
 import {BGCurve} from '../../assets';
-import {gaps} from "../../contants/layout";
+import {borderRadius, colors, gaps, elementSizes} from "../../contants/layout";
 import {routes} from "../../contants/routes";
 
 import withMeiosis, {WithMeiosisProps} from "../../components/HOC";
 import Preloader from "../../components/Preloader";
 import ErrorPanel from "../../components/ErrorPanel";
+import {FriendCardHorizontal} from "../../components/FriendCard";
+import {Imager} from "../../components/ImageCard";
+import {removeLastSlash} from "../../helpers";
+import RoundedButton from "../../components/Buttons";
 
 
 interface ShareProps extends WithMeiosisProps {
@@ -70,7 +74,7 @@ class Share extends React.Component<ShareProps, ShareState> {
                                 ...actionData.metadata,
                                 voucherData: {
                                     ...actionData.metadata.voucherData,
-                                    campaignImagePath: data2.result.imagePath,
+                                    campaignImagePath: data2.result.campaignImagePath,
                                 }
                             }
                         });
@@ -90,12 +94,10 @@ class Share extends React.Component<ShareProps, ShareState> {
 
     onGetActionDataByLinkIdError = (data: any) => {
         this.setState({ isError: true });
-
     };
 
     onCheckSessionSuccess = () => {
         this.setState({ isLoading: false });
-
     };
 
     onCheckSessionFailed = () => {
@@ -113,7 +115,7 @@ class Share extends React.Component<ShareProps, ShareState> {
     };
 
     render() {
-        const { history } = this.props;
+        const { history, globalStates } = this.props;
         const { isLoading, isError } = this.state;
 
         return (<>
@@ -127,12 +129,34 @@ class Share extends React.Component<ShareProps, ShareState> {
                 <Preloader isShown={true} message={'redirecting...'} />
             ) : (
                 <ShareWrapper className="share-screen">
-                    some content here
+                    <div className="receive-gift-header">
+                        <FriendCardHorizontal
+                            name={globalStates!.shareInfo.metadata.fromDisplayName}
+                            imagePath={'globalStates!.shareInfo.metadata.voucherData.campaignImagePath'}
+                            message={'sent you a gift!'}
+                        />
+                    </div>
 
-                    {/*<div className="cta-area">
-                        <Link to={routes.SIGNUP}>Sign up new account</Link>
-                        <RoundedButton text="Sign In" onClick={this.clickHandler} disabled={!enableLoginButton} />
-                    </div>*/}
+                    <div className="rounded-panel">
+                        <div className="gift-image-resizer">
+                            <div className="gift-image-holder">
+                                <Imager
+                                    className="gift-card"
+                                    title={'voucherInfo.campaign'}
+                                    imagePath={removeLastSlash(apiService.apiBasePath) + globalStates!.shareInfo.metadata.voucherData.campaignImagePath}
+                                />
+                            </div>
+                        </div>
+                        <div className="gift-message"
+                             style={{backgroundImage: `url(${globalStates!.shareInfo.metadata.cardData.designType})`}}>
+                            { globalStates!.shareInfo.metadata.cardData.message }
+                        </div>
+                    </div>
+
+                    <div className="cta-area">
+                        <RoundedButton text="Send A Thank You Note" onClick={this.clickHandler} fullWidth={true} />
+                        <RoundedButton text="View Your Gift" onClick={this.clickHandler} fullWidth={true} colorHex={colors.GrayDarker} />
+                    </div>
                 </ShareWrapper>
             )) }
         </>);
@@ -143,25 +167,58 @@ export default withMeiosis(Share);
 
 
 const ShareWrapper = styled.div`
-    display: flex;
     height: 100%;
-    justify-content: center;
-    align-items: center;
+    padding: ${gaps.Common};
     // background: url(${BGCurve}) center top / contain no-repeat;
+
+    & .receive-gift-header {
+        // padding: 0 ${gaps.Common};
+        
+        & h2 {}
+        
+        & .friend-card-horizontal { }
+    }
     
     & .rounded-panel {
-        padding: 0 ${gaps.Common} ${gaps.Common};
-        transition: padding 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;
+        margin-top: ${gaps.Large};
+        border: 1px solid ${colors.Pink};
+        border-radius: ${borderRadius}px;
+        overflow: hidden;
         
-        &.focused {
+        & .gift-image-resizer {
+            width: 100%;
+            max-width: ${elementSizes.GiftImageMaxWidth};
+            margin: 0 auto;
+            
+            & .gift-image-holder {
+                position: relative;
+                width: 100%;                        
+                height: 0;
+                padding-bottom: ${elementSizes.GiftImageRatioHeight}%;
+                
+                & .gift-card {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    background: ${colors.Gray} center / cover no-repeat;
+                }
+            }
+        }  
+        
+        & .gift-message {
             padding: ${gaps.Common};
+            min-height: 8rem;
         }
     }
     
     & .cta-area {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: ${gaps.Large};
+        margin-top: ${gaps.Common};
+        
+        & .rounded-button {
+            margin-top: ${gaps.Small};
+        }
     }
 `;

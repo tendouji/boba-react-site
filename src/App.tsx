@@ -27,9 +27,10 @@ import GiftDetails from './pages/GiftDetails';
 import {colors} from "./contants/layout";
 import {routes} from "./contants/routes";
 import ShareGift from './pages/ShareGift';
-import Contact from './pages/Contact';
+import AddContact from './pages/AddContact';
 import ThankYou from './pages/ThankYou';
 import Share from './pages/Share';
+import ContactDetails from './pages/ContactDetails';
 
 
 declare global {
@@ -84,10 +85,11 @@ const RoutingComponent: React.FC<{match: any}> = ({match}) => (<>
     <Switch>
         <Route path={routes.SIGNIN} component={Login} />
         <Route path={routes.SIGNIN + '/:id'} component={Login} />
-        <Route exact path={routes.SIGNUP} component={Register} />
+        <Route path={routes.SIGNUP} component={Register} />
         <Route path={routes.SIGNUP + '/:id'} component={Register} />
         <Route path={routes.MAIN} component={Main} />
-        <Route path={routes.CONTACT} component={Contact} />
+        <Route path={routes.ADD_CONTACT} component={AddContact} />
+        <Route path={routes.CONTACT_DETAILS + '/:id'} component={ContactDetails} />
         <Route path={routes.BRAND_DETAILS + '/:id'} component={BrandDetails} />
         <Route path={routes.GIFT_DETAILS + '/:id'} component={GiftDetails} />
         <Route path={routes.SHARE_GIFT + '/:friendId'} component={ShareGift} />
@@ -112,4 +114,6 @@ const ScreenWrapper = styled.div`
     border-right: 1px solid ${colors.Gray};
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     background-color: ${colors.White};
+    
+    // opacity: 0.2;
 `;

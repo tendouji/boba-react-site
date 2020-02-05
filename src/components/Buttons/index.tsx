@@ -10,12 +10,13 @@ import {
 type RoundedButtonType = {
     text: string,
     onClick: () => void,
+    colorHex?: string,
     size?: 'x-small' | 'small' | 'large' | 'x-large',
     fullWidth?: boolean,
     disabled?: boolean,
 }
 
-const RoundedButton: React.FC<RoundedButtonType> = ({text, onClick, size, fullWidth, disabled}) => {
+const RoundedButton: React.FC<RoundedButtonType> = ({text, onClick, colorHex, size, fullWidth, disabled}) => {
     return (
         <RoundedButtonWrapper
             className={[
@@ -25,6 +26,7 @@ const RoundedButton: React.FC<RoundedButtonType> = ({text, onClick, size, fullWi
             ].join('')}
             // height={'3rem'}
             onClick={onClick}
+            {...(!!colorHex ? { colorHex } : {})}
             disabled={disabled}
         >{text}</RoundedButtonWrapper>
     );
@@ -35,6 +37,7 @@ export default RoundedButton;
 
 interface RoundedButtonWrapperProps extends React.HTMLAttributes<HTMLButtonElement> {
     height?: string,
+    colorHex?: string,
 }
 
 const RoundedButtonWrapper = styled('button')<RoundedButtonWrapperProps>`
@@ -53,7 +56,7 @@ const RoundedButtonWrapper = styled('button')<RoundedButtonWrapperProps>`
     font-size: ${fontSizes.Common};
     font-weight: 500;
     text-align: center;
-    background-color: ${colors.Pink};
+    background-color: ${props => !!props.colorHex ? props.colorHex : colors.Pink};
     white-space: nowrap;
     cursor: pointer;
     

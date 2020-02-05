@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import styled from "styled-components";
 
@@ -8,10 +8,65 @@ import {
     colors,
     fontSizes,
     gaps,
-    commonStyle
+    commonStyle, borderRadius
 } from "../../contants/layout";
-import ImageCard from "../ImageCard";
 import {ProfileDefault} from "../../assets";
+import {checkImageURL} from "../../helpers";
+
+
+
+type ProfileCardProps = {
+    title: string,
+    imagePath: string,
+    className?: string,
+}
+
+const ProfileCard = (props: ProfileCardProps) => {
+    const [filteredPath, setImage] = useState('');
+
+    useEffect(() => {
+        async function checkImage(path: string) {
+            const data: any = await checkImageURL(path);
+            setImage(!!data.loaded ? path : String(ProfileDefault));
+        }
+        checkImage(props.imagePath);
+    }, [props.imagePath]);
+
+    return (<>{ filteredPath !== '' ? (
+        <ProfileCardWrapper className={[
+            "card-image",
+            (!!props.className && props.className !== '' ? ` ${props.className}` : '')
+        ].join('')}>
+            <div className="image" style={{backgroundImage: `url(${filteredPath})`}}>
+                {props.title}
+            </div>
+        </ProfileCardWrapper>
+    ) : null }</>)
+};
+
+
+interface ProfileCardWrapperProps extends React.HTMLAttributes<HTMLDivElement> {
+    size?: cardSizeLabels,
+}
+
+const ProfileCardWrapper = styled('div')<ProfileCardWrapperProps>`
+    display: inline-block;
+    width: ${cardSizes[cardSizeLabels.SmallSquare][0]}rem;
+    
+    & .image {
+        padding-bottom: calc(100%  - 2px); // NOTE: 2px for border top and bottom
+        width: 100%;
+        height: 0;
+        border: 1px solid ${colors.Pink};
+        border-radius: ${borderRadius}px;
+        box-sizing: border-box;
+        background: ${colors.White} center / cover no-repeat;
+        font-size: 0;
+    }
+`;
+
+export { ProfileCard };
+
 
 
 type FriendCardProps = {
@@ -24,8 +79,7 @@ type FriendCardProps = {
 
 const FriendCard: React.FC<FriendCardProps> = ({name, imagePath, isURL, urlPath = '', urlState}) => {
     const InnerContent = <>
-        <ImageCard
-            size={cardSizeLabels.SmallSquare}
+        <ProfileCard
             title={name}
             imagePath={(!!imagePath && imagePath !== '' ? imagePath : String(ProfileDefault))}
         />
@@ -85,10 +139,9 @@ type FriendCardHorizontalProps = {
 const FriendCardHorizontal: React.FC<FriendCardHorizontalProps> = ({name, imagePath, message = ''}) => {
     return (
         <FriendCardHorizontalWrapper className="friend-card-horizontal">
-            <ImageCard
-                size={cardSizeLabels.SmallSquare}
+            <ProfileCard
                 title={name}
-                imagePath={imagePath}
+                imagePath={(!!imagePath && imagePath !== '' ? imagePath : String(ProfileDefault))}
             />
             <div className="text">
                 <div className="name">{name}</div>

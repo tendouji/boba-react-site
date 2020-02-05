@@ -23,23 +23,23 @@ import RoundedButton from "../../components/Buttons";
 
 
 
-interface ContactProps extends WithMeiosisProps {
+interface AddContactProps extends WithMeiosisProps {
     [key: string]: any;
 }
 
-interface ContactState extends WithMeiosisProps {
+interface AddContactState extends WithMeiosisProps {
     friendInfo: any;
     senderId: string,
     selectedVoucher: string,
 
 }
 
-class Contact extends React.Component<ContactProps, ContactState> {
+class AddContact extends React.Component<AddContactProps, AddContactState> {
     private friendNameElm: React.RefObject<HTMLInputElement>;
     private friendNoElm: React.RefObject<HTMLInputElement>;
     private friendDOBElm: React.RefObject<HTMLInputElement>;
 
-    constructor(props: ContactProps) {
+    constructor(props: AddContactProps) {
         super(props);
         this.state = {
             friendInfo: {},
@@ -114,7 +114,7 @@ class Contact extends React.Component<ContactProps, ContactState> {
 
         return (
             <PageWithMenu>
-                <ContactWrapper className="contact-screen">
+                <AddContactWrapper className="contact-screen">
                     <h2>Add Contact</h2>
 
                     <div className="add-form">
@@ -151,17 +151,17 @@ class Contact extends React.Component<ContactProps, ContactState> {
                     </div>
 
                     <RoundedButton text={'Save'} fullWidth={true} onClick={this.saveContact} />
-                </ContactWrapper>
+                </AddContactWrapper>
             </PageWithMenu>
         );
     }
 }
 
-export default withMeiosis(Contact);
+export default withMeiosis(AddContact);
 
 
 const labelWidth: string = '10rem';
-const ContactWrapper = styled.div`
+const AddContactWrapper = styled.div`
     height: 100%;
     padding: ${gaps.Common};
     box-sizing: border-box;

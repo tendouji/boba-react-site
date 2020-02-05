@@ -68,7 +68,7 @@ const ImageCardWrapper = styled('div')<ImageCardWrapperProps>`
         border: 1px solid ${colors.Pink};
         border-radius: ${borderRadius}px;
         box-sizing: border-box;
-        background: ${colors.GrayDarker} center / cover no-repeat;
+        background: ${colors.White} center / cover no-repeat;
         font-size: 0;
     }
 `;
@@ -104,6 +104,6 @@ const ImagerWrapper = styled.div`
     display: inline-block;
     width: 100%;
     height: 100%;
-    background: ${colors.GrayDarker} center / cover no-repeat;
+    background: ${colors.White} center / cover no-repeat;
     font-size: 0;
 `;

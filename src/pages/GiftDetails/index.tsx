@@ -114,7 +114,7 @@ class GiftDetails extends React.Component<GiftDetailsProps, GiftDetailsState> {
         const { selectedVoucher } = this.state;
 
         history.push({
-            pathname: routes.CONTACT,
+            pathname: routes.ADD_CONTACT,
             state: {
                 selectedVoucher,
             }

@@ -198,7 +198,7 @@ class Main extends React.Component<MainProps, MainState> {
                                                                 name={item2.displayName}
                                                                 imagePath={removeLastSlash(apiService.apiBasePath) + item2.imagePath}
                                                                 isURL={true}
-                                                                urlPath={`friend-detail/${item2.id}`}
+                                                                urlPath={`contact-details/${item2.username}`}
                                                             />
                                                         </li>
                                                     ))}
@@ -228,7 +228,7 @@ class Main extends React.Component<MainProps, MainState> {
                                                                     title={item2.name}
                                                                     imagePath={removeLastSlash(apiService.apiBasePath) + (item2.iconPath || item2.imagePath)}
                                                                 />
-                                                                <div className="caption" style={{width: `${cardSizes[item.size][1]}rem`}}>{
+                                                                <div className="caption" style={{width: `${cardSizes[item.size][0]}rem`}}>{
                                                                     item.type === 'brandLove' ? item2.name :
                                                                         item.type === 'faveGiftCard' ? item2.name : 'text'
                                                                 }</div>

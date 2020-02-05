@@ -24,24 +24,33 @@ const apiService = {
             FirstVoucherByCampaignId    : this.apiBasePath + 'api/web/product/voucher/first',
             BuyShareVoucher             : this.apiBasePath + 'api/web/product/voucher/buy-share',
             BuyShareVoucherFinalised    : this.apiBasePath + 'api/web/product/voucher/buy-share-complete',
+            ContactByNumber             : this.apiBasePath + 'api/web/friend/get/phone',
             AddContact                  : this.apiBasePath + 'api/web/friend/add',
+            AddContactPhoto             : this.apiBasePath + 'api/web/friend/upload/photo',
             ActionDataByLinkId          : this.apiBasePath + 'api/public/action',
             CampaignLabelImageById      : this.apiBasePath + 'api/public/campaign',
         }
     },
 
-    fetchData: (apiPath: string = '', opts: any = {}) => {
+    fetchData: (apiPath: string = '', opts: any = {}, isFormData: boolean = false) => {
         const defaultRequest = {
             method: opts.method || 'GET',
             credentials: opts.credentials || 'same-origin',
-            headers: opts.header || { 'Content-Type': 'application/json' },
+            ...(!!isFormData
+                ? {}
+                : { headers: opts.header || { 'Content-Type': 'application/json' } }
+            ),
             mode: opts.mode || 'cors',
             cache: opts.cache || 'no-cache',
         };
 
         const optObj: RequestInit = {
             ...defaultRequest,
-            ...(opts.method === 'POST' ? { body: JSON.stringify(opts.data) || JSON.stringify({}) } : {})
+            ...(!!isFormData
+                ? ({body: opts.data.formData})
+                : (opts.method === 'POST'
+                    ? { body: JSON.stringify(opts.data) || JSON.stringify({}) }
+                    : {}))
         };
 
         return (
@@ -260,7 +269,20 @@ const apiService = {
                 ).then((response: any) => !!response.error ? onError(response) : onSuccess(response)
                 ).catch((error: any) => onError(error));
             },
+            GetContactByNumber: (opts: ApiType) => {
+                const onSuccess = !!opts.onSuccess
+                    ? opts.onSuccess
+                    : (data: any) => defaultSuccessHandler('GetContactByNumber', data);
 
+                const onError = !!opts.onError
+                    ? opts.onError
+                    : (data: any) => defaultErrorHandler('GetContactByNumber', data);
+
+                this.fetchData(this.ApiAddress.ContactByNumber + '/' + opts.phone, {
+                    credentials: 'include',
+                }).then((response: any) => !!response.error ? onError(response) : onSuccess(response)
+                ).catch((error: any) => onError(error));
+            },
             AddContact: (opts: ApiType) => {
                 const onSuccess = !!opts.onSuccess
                     ? opts.onSuccess
@@ -278,9 +300,29 @@ const apiService = {
                         friendName: opts.friendName,
                         friendDOB: opts.friendDOB,
                         friendPhoto: opts.friendPhoto,
-                        senderId: opts.senderId,
                     },
                 }).then((response: any) => !!response.error ? onError(response) : onSuccess(response)
+                ).catch((error: any) => onError(error));
+            },
+            AddContactPhoto: (opts: ApiType) => {
+                const onSuccess = !!opts.onSuccess
+                    ? opts.onSuccess
+                    : (data: any) => defaultSuccessHandler('AddContactPhoto', data);
+
+                const onError = !!opts.onError
+                    ? opts.onError
+                    : (data: any) => defaultErrorHandler('AddContactPhoto', data);
+
+                let formData = new FormData();
+                formData.append('friendPhotoImage', opts.fileObj);
+
+                this.fetchData(this.ApiAddress.AddContactPhoto + '/' + opts.friendNo, {
+                    method: 'POST',
+                    credentials: 'include',
+                    data: {
+                        formData,
+                    },
+                }, true).then((response: any) => !!response.error ? onError(response) : onSuccess(response)
                 ).catch((error: any) => onError(error));
             },
             GetCardDesigns: (opts: ApiType) => {

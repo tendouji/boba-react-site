@@ -25,8 +25,8 @@ import {
 } from "react-router-dom";
 import {StaticContext} from "react-router";
 
-import SnackBar from './components/SnackBar';
 import withMeiosis, {WithMeiosisProps} from "./components/HOC";
+// import SnackBar from './components/SnackBar';
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -76,14 +76,14 @@ class App extends React.Component<AppProps, AppState> {
                         <Route path={routes.HOME + ':linkId'} component={RoutingComponent} />
                     </Switch>
 
-                    <SnackBar
+                    {/*<SnackBar
                         isShown={!!globalStates!.showSnackBar}
                         content={globalStates!.snackBarMessage}
                         onClose={this.onSnackBarClose}
                         hasCTA={!!globalStates!.snackBarHasCTA}
                         CTAButtonLabel={globalStates!.snackBarCTAButtonLabel}
                         onCTAClick={globalStates!.snackBarCTAClickHandler}
-                    />
+                    />*/}
                 </Screen>
             </Router>
         );

@@ -25,12 +25,13 @@ import {
 } from "react-router-dom";
 import {StaticContext} from "react-router";
 
-import {colors} from "./constants/layout";
-import {routes} from "./constants/routes";
+// import {colors} from "./constants/layout";
+// import {routes} from "./constants/routes";
 
 // import withMeiosis, {WithMeiosisProps} from "./components/HOC";
-import SnackBar from './TestComponent/SnackBar';
+// import SnackBar from './TestComponent/SnackBar';
 
+/*
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Main from "./pages/Main";
@@ -41,6 +42,7 @@ import AddContact from './pages/AddContact';
 import ThankYou from './pages/ThankYou';
 import Share from './pages/Share';
 import ContactDetails from './pages/ContactDetails';
+*/
 
 
 declare global {
@@ -158,11 +160,7 @@ const ScreenWrapper = styled.div`
 class App extends React.Component<{}> {
     render() {
         return(
-            <SnackBar
-                isShown={true}
-                content={'Nothing'}
-                onClose={() => null}
-            />
+            <>test also</>
         )
     }
 }

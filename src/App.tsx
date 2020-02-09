@@ -29,7 +29,7 @@ import {colors} from "./constants/layout";
 import {routes} from "./constants/routes";
 
 import withMeiosis, {WithMeiosisProps} from "./components/HOC";
-import SnackBar from './components/SnackBar';
+import SnackBar from './TestComponent/SnackBar';
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";

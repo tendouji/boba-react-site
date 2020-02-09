@@ -16,7 +16,9 @@
     "react-scripts": "3.3.0",
     "styled-components": "^4.4.1",
     "typescript": "^3.7.4",
-    "utility-types": "^3.10.0",
+    "utility-types": "^3.10.0"
+  },
+  "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
@@ -33,7 +35,7 @@
     "node": "10.x"
   } ,
   "scripts": {
-    "start": "REACT_APP_API_BASE_PATH=boba-gift-poc.herokuapp.com react-scripts start",
+    "start": "PORT=3301 REACT_APP_API_BASE_PATH=boba-gift-poc.herokuapp.com react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

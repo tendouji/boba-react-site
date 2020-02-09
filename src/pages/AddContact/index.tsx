@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import AddIcon from '@material-ui/icons/Add';
-
 import withMeiosis, {WithMeiosisProps} from "../../components/HOC";
 import PageWithMenu from "../../components/PageWithMenu";
 import {apiService} from "../../services/api";
@@ -17,9 +15,9 @@ import {
 } from "../../contants/layout";
 import {routes} from "../../contants/routes";
 
-import RoundedButton from "../../components/Buttons";
-// import ImageCard from "../../components/ImageCard";
-// import FriendCard from "../../components/FriendCard";
+import ContactPanel from "../../components/ContactPanel";
+import {setSessionStorage} from "../../helpers";
+import {sessionStorageKey} from "../../contants/app";
 
 
 
@@ -29,9 +27,11 @@ interface AddContactProps extends WithMeiosisProps {
 
 interface AddContactState extends WithMeiosisProps {
     friendInfo: any;
+    newFriendNo: string,
     senderId: string,
     selectedVoucher: string,
-
+    friendPhotoDom?: HTMLInputElement;
+    friendPhotoBinary?: any,
 }
 
 class AddContact extends React.Component<AddContactProps, AddContactState> {
@@ -43,8 +43,11 @@ class AddContact extends React.Component<AddContactProps, AddContactState> {
         super(props);
         this.state = {
             friendInfo: {},
-            senderId: '',
+            newFriendNo: '',
             selectedVoucher: '',
+            friendPhotoDom: undefined,
+            friendPhotoBinary: null,
+            senderId: '',
             ...props.globalStates!
         };
 
@@ -63,11 +66,27 @@ class AddContact extends React.Component<AddContactProps, AddContactState> {
         });
     }
 
-    saveContact = () => {
-        const friendNo: string = this.friendNoElm.current!.value;
-        const friendName: string = this.friendNameElm.current!.value;
-        const friendDOB: string = this.friendDOBElm.current!.value;
+    fileInputChange = (e: ProgressEvent<FileReader>, dom: HTMLInputElement) => {
+        this.setState({ friendPhotoDom: dom }, () => {
+            const { friendPhotoDom } = this.state;
 
+            if(!!friendPhotoDom) {
+                if(friendPhotoDom.files && friendPhotoDom.files[0]) {
+                    const reader = new FileReader();
+
+                    reader.addEventListener('load', () => {
+                        this.setState({ friendPhotoBinary: reader.result });
+                    });
+
+                    if(reader.readyState === FileReader.LOADING) reader.abort();
+
+                    reader.readAsBinaryString(friendPhotoDom.files[0]);
+                }
+            }
+        });
+    };
+
+    saveContact = (friendNo: string, friendName: string, friendDOB?: string) => {
         if(friendNo === '' || friendName === '') {
             const {globalActions} = this.props;
 
@@ -79,20 +98,54 @@ class AddContact extends React.Component<AddContactProps, AddContactState> {
             return;
         }
 
-        const {senderId} = this.state;
+        this.setState({ newFriendNo: friendNo });
 
         apiService.ApiCall.AddContact({
             friendName,
             friendNo,
             friendDOB: friendDOB || '',
-            senderId,
+            isAdd: true,
             onSuccess: this.onAddContactSuccess,
         });
     };
 
     onAddContactSuccess = (data: any) => {
-        console.log('onAddContactSuccess', data);
-        this.redirectToFriend();
+        const {globalActions} = this.props;
+        globalActions.updateUserInfoByKey('friends', data.result.friends);
+        setSessionStorage(sessionStorageKey.user, data.result);
+
+        // NOTE: update data success, so let's upload photo now
+        const {
+            newFriendNo,
+            friendPhotoDom,
+            friendPhotoBinary
+        } = this.state;
+
+        if(!friendPhotoDom || !friendPhotoBinary) {
+            return;
+        }
+
+        if(!friendPhotoDom.files || friendPhotoDom.files.length === 0) { // NOTE: no file selected
+            return;
+        }
+
+        // NOTE: If there is a selected file, wait it is read
+        // NOTE: If there is not, delay the execution of the function
+        if( !friendPhotoBinary && friendPhotoDom.files.length > 0 ) {
+            setTimeout(() => this.onAddContactSuccess(data), 10);
+            return;
+        }
+
+        apiService.ApiCall.AddContactPhoto({
+            fileObj: friendPhotoDom.files[0],
+            friendNo: newFriendNo,
+            onSuccess: (data: any) => {
+                globalActions.updateUserInfoByKey('friends', data.result.userInfo.friends);
+                setSessionStorage(sessionStorageKey.user, data.result.userInfo);
+            }
+        })
+
+        // this.redirectToFriend();
     };
 
     redirectToFriend = () => {
@@ -117,40 +170,14 @@ class AddContact extends React.Component<AddContactProps, AddContactState> {
                 <AddContactWrapper className="contact-screen">
                     <h2>Add Contact</h2>
 
-                    <div className="add-form">
-                        <div className="friend-image">
-                            <div className="clicker">
-                                { !!hasFriendInfo
-                                    ? <div className="photo" />
-                                    : <i><AddIcon fontSize="large" style={{color: colors.White}} /></i>
-                                }
-                            </div>
-                            <button>{ !!hasFriendInfo ? 'Change' : 'Add'} Photo</button>
-                        </div>
-
-                        <div className="form-area">
-                            <div className="form-row">
-                                <div className="label">Name *</div>
-                                <div className="input">
-                                    <input type="text" name="friendName" placeholder="Name" ref={this.friendNameElm} />
-                                </div>
-                            </div>
-                            <div className="form-row">
-                                <div className="label">Phone Number *</div>
-                                <div className="input">
-                                    <input type="text" name="friendNo" placeholder="Format: 60123456789" ref={this.friendNoElm} />
-                                </div>
-                            </div>
-                            <div className="form-row">
-                                <div className="label">Birthday</div>
-                                <div className="input">
-                                    <input type="text" name="friendDOB" placeholder="Format: DD/MM/YYYY" ref={this.friendDOBElm} />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <RoundedButton text={'Save'} fullWidth={true} onClick={this.saveContact} />
+                    <ContactPanel
+                        hasFriendInfo={hasFriendInfo}
+                        friendName={''}
+                        friendNo={''}
+                        buttonText={'Add Contact'}
+                        onClick={this.saveContact}
+                        onFileChange={this.fileInputChange}
+                    />
                 </AddContactWrapper>
             </PageWithMenu>
         );

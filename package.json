@@ -35,7 +35,7 @@
     "node": "10.x"
   } ,
   "scripts": {
-    "start": "PORT=3301 REACT_APP_API_BASE_PATH=localhost:3300 react-scripts start",
+    "start": "PORT=3301 REACT_APP_API_BASE_PATH=boba-gift-poc.herokuapp.com react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

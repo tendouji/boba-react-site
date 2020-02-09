@@ -68,11 +68,11 @@ class ShareGift extends React.Component<ShareGiftProps, ShareGiftState> {
             campaignId = location.state.campaignId;
             friendInfo = location.state.friendInfo;
 
-            setSessionStorage(sessionStorageKey.gift, JSON.stringify({
+            setSessionStorage(sessionStorageKey.gift, {
                 giftId,
                 campaignId,
                 friendInfo,
-            }));
+            });
         } else {
             const sessionData = getSessionStorage(sessionStorageKey.gift);
             if(!!sessionData && sessionData !== '') {

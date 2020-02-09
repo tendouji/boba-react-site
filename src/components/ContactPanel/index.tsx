@@ -27,119 +27,196 @@ type ContactPanelProps = {
     friendImagePath?: string;
 }
 
+type ContactPanelState = {
+    friendName: string,
+    friendNo: string,
+    friendDOB?: string,
+    friendImagePath?: string;
+    buttonText?: string;
+};
 
+class ContactPanel extends React.Component<ContactPanelProps, ContactPanelState> {
+    private friendNameElm: React.RefObject<HTMLInputElement> = React.createRef();
+    private friendNoElm: React.RefObject<HTMLInputElement> = React.createRef();
+    private friendDOBElm: React.RefObject<HTMLInputElement> = React.createRef();
+    private friendPhotoElm: React.RefObject<HTMLInputElement> = React.createRef();
 
-const ContactPanel: React.FC<ContactPanelProps> = ({   hasFriendInfo,
-                                                       friendName,
-                                                       friendNo,
-                                                       buttonText = 'Save',
-                                                       onClick,
-                                                       onFileChange,
-                                                       friendDOB = '',
-                                                       friendImagePath = ''}) => {
-    const friendNameElm: React.RefObject<HTMLInputElement> = React.createRef();
-    const friendNoElm: React.RefObject<HTMLInputElement> = React.createRef();
-    const friendDOBElm: React.RefObject<HTMLInputElement> = React.createRef();
-    const friendPhotoElm: React.RefObject<HTMLInputElement> = React.createRef();
+    constructor(props: ContactPanelProps) {
+        super(props);
 
-    const [_friendImagePath, setFriendImage] = useState<string>('');
+        this.state = {
+            friendName: '',
+            friendNo: '',
+            friendDOB: '',
+            friendImagePath: '',
+            buttonText: 'Save',
+        };
 
-    const clickHandler = () => {
-        onClick(
-            friendNoElm.current!.value,
-            friendNameElm.current!.value,
-            friendDOBElm.current!.value,
-        );
+        this.friendNameElm = React.createRef();
+        this.friendNoElm = React.createRef();
+        this.friendDOBElm = React.createRef();
+        this.friendPhotoElm = React.createRef();
+
+        this.textChangeHandler = this.textChangeHandler.bind(this);
+    }
+
+    componentDidMount() {
+        const {
+            friendName,
+            friendNo,
+            friendDOB,
+            buttonText,
+            friendImagePath,
+        } = this.props;
+
+        this.setState({
+            friendName,
+            friendNo,
+            friendDOB: friendDOB || '',
+            friendImagePath: friendImagePath || '',
+            buttonText: buttonText || 'Save',
+        });
+    }
+
+    textChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState({
+            friendName: this.friendNameElm.current!.value || '',
+            friendNo: this.friendNoElm.current!.value || '',
+            friendDOB: this.friendDOBElm.current!.value || '',
+        });
     };
 
-    const fileChangeHandler = () => {
-        const input = friendPhotoElm.current!;
-        const inputFiles = friendPhotoElm.current!.files;
+    clickHandler = () => {
+        const {onClick} = this.props;
+        const {
+            friendName,
+            friendNo,
+            friendDOB,
+        } = this.state;
+
+        onClick(friendNo, friendName, friendDOB);
+    };
+
+    setFriendImage = (data: any) => {
+        this.setState({ friendImagePath: data });
+    };
+
+    fileChangeHandler = () => {
+        const {onFileChange} = this.props;
+
+        const input = this.friendPhotoElm.current!;
+        const inputFiles = this.friendPhotoElm.current!.files;
 
         if (inputFiles && inputFiles[0]) {
             const reader = new FileReader();
             reader.onload = (e: ProgressEvent<FileReader>) => {
                 const result = e.target!.result as string;
-                setFriendImage(result);
+                this.setFriendImage(result);
                 onFileChange(e, input);
             };
             reader.readAsDataURL(inputFiles[0]);
         }
     };
 
-    return (
-        <ContactPanelWrapper className="error-screen">
-            <div className="contact-panel">
-                <div className="friend-image">
-                    <div className="clicker">
-                        { !!hasFriendInfo
-                            ? <ProfileCard
-                                className="photo"
-                                title={friendName}
-                                imagePath={_friendImagePath || friendImagePath} />
-                            : <i><AddIcon fontSize="large" style={{color: colors.White}} /></i>
-                        }
+    render() {
+        const { hasFriendInfo } = this.props;
+        const {
+            friendName,
+            friendNo,
+            friendDOB,
+            friendImagePath = '',
+            buttonText = 'Save',
+        } = this.state;
 
-                        <label className="photo-uploader">
-                            <input type="file"
-                                   id="friendPhotoImage"
-                                   name="friendPhotoImage"
-                                   ref={friendPhotoElm}
-                                   onChange={fileChangeHandler} />
-                        </label>
+        return (
+            <ContactPanelWrapper className="contact-screen">
+                <div className="contact-panel">
+                    <div className="friend-image">
+                        <div className="clicker">
+                            { !!hasFriendInfo
+                                ? <ProfileCard
+                                    className="photo"
+                                    title={friendName}
+                                    imagePath={friendImagePath} />
+                                : <>{ friendImagePath !== '' ?
+                                        <ProfileCard
+                                            className="photo"
+                                            title={'New Friend'}
+                                            imagePath={friendImagePath} /> :
+                                        <i><AddIcon fontSize="large" style={{color: colors.White}} /></i>
+                                }</>
+                            }
+
+                            <label className="photo-uploader">
+                                <input type="file"
+                                       id="friendPhotoImage"
+                                       name="friendPhotoImage"
+                                       ref={this.friendPhotoElm}
+                                       onChange={this.fileChangeHandler} />
+                            </label>
+                        </div>
+                        <button>{ !!hasFriendInfo ? 'Change' : 'Add'} Photo</button>
                     </div>
-                    <button>{ !!hasFriendInfo ? 'Change' : 'Add'} Photo</button>
+
+                    <div className="form-area">
+                        <div className="form-row">
+                            <div className="label">Name *</div>
+                            <div className="input">
+                                <input type="text"
+                                       name="friendName"
+                                       placeholder="Name"
+                                       ref={this.friendNameElm}
+                                       defaultValue={friendName}
+                                       onChange={this.textChangeHandler}
+                                />
+                            </div>
+                        </div>
+                        <div className="form-row">
+                            <div className="label">Phone Number *</div>
+                            <div className="input">
+                                <input type="text"
+                                       name="friendNo"
+                                       placeholder="Format: 60123456789"
+                                       ref={this.friendNoElm}
+                                       defaultValue={friendNo}
+                                       onChange={this.textChangeHandler}
+                                />
+                            </div>
+                        </div>
+                        <div className="form-row">
+                            <div className="label">Birthday</div>
+                            <div className="input">
+                                <input type="text"
+                                       name="friendDOB"
+                                       placeholder="Format: DD/MM/YYYY"
+                                       ref={this.friendDOBElm}
+                                       defaultValue={friendDOB}
+                                       onChange={this.textChangeHandler}
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div className="form-area">
-                    <div className="form-row">
-                        <div className="label">Name *</div>
-                        <div className="input">
-                            <input type="text"
-                                   name="friendName"
-                                   placeholder="Name"
-                                   ref={friendNameElm}
-                                   value={!!hasFriendInfo ? friendName : ''} />
-                        </div>
-                    </div>
-                    <div className="form-row">
-                        <div className="label">Phone Number *</div>
-                        <div className="input">
-                            <input type="text"
-                                   name="friendNo"
-                                   placeholder="Format: 60123456789"
-                                   ref={friendNoElm}
-                                   value={!!hasFriendInfo ? friendNo : ''} />
-                        </div>
-                    </div>
-                    <div className="form-row">
-                        <div className="label">Birthday</div>
-                        <div className="input">
-                            <input type="text"
-                                   name="friendDOB"
-                                   placeholder="Format: DD/MM/YYYY"
-                                   ref={friendDOBElm}
-                                   value={!!hasFriendInfo ? friendDOB : ''}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <RoundedButton text={buttonText} fullWidth={true} onClick={this.clickHandler} />
+            </ContactPanelWrapper>
+        );
+    }
 
-            <RoundedButton text={buttonText} fullWidth={true} onClick={clickHandler} />
-        </ContactPanelWrapper>
-    );
-};
+}
 
 export default ContactPanel;
 
 
 const labelWidth: string = '10rem';
 const ContactPanelWrapper = styled.div`
-    position: relative;
-    margin-top: calc(${cardSizes[cardSizeLabels.Small][1]}rem / 2 + ${gaps.Common});
-    border-radius: ${borderRadius}px;
-    background-color: ${colors.White};
+    
+    & .contact-panel {
+        position: relative;
+        margin-top: calc(${cardSizes[cardSizeLabels.Small][1]}rem / 2 + ${gaps.Common});
+        border-radius: ${borderRadius}px;
+        background-color: ${colors.White};
+    }
     
     & .friend-image { 
         position: relative; 

@@ -115,7 +115,7 @@ class Login extends React.Component<LoginProps, LoginState> {
         const { history } = this.props;
 
         if(+data.code === 200) {
-            setSessionStorage(sessionStorageKey.user, JSON.stringify(data.result));
+            setSessionStorage(sessionStorageKey.user, data.result);
 
             history.push({
                 pathname: routes.HOME,

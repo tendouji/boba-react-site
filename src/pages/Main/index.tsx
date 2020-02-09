@@ -21,6 +21,7 @@ import SearchBar from '../../components/SearchBar';
 import {removeLastSlash} from "../../helpers";
 import FriendCard from "../../components/FriendCard";
 import Preloader from '../../components/Preloader';
+import RoundedButton from "../../components/Buttons";
 
 
 interface MainProps extends WithMeiosisProps {
@@ -113,6 +114,11 @@ class Main extends React.Component<MainProps, MainState> {
         console.log('scroll');
     };
 
+    addNewContact = () => {
+        const { history } = this.props;
+        history.push({ pathname: routes.ADD_CONTACT });
+    };
+
     render() {
         const { homeData, isLoading } = this.state;
 
@@ -133,7 +139,7 @@ class Main extends React.Component<MainProps, MainState> {
 
                                             <HorizontalScroller
                                                 height={+cardSizes[item.size][1] * 16}
-                                                scrollHandler={this.horizontalScrollHandler}
+                                                // scrollHandler={this.horizontalScrollHandler}
                                                 sidePadded={true}
                                             >
                                                 <ul>
@@ -160,7 +166,7 @@ class Main extends React.Component<MainProps, MainState> {
                                         <div key={key} className="category-menu top-content">
                                             <HorizontalScroller
                                                 height={85}
-                                                scrollHandler={this.horizontalScrollHandler}
+                                                // scrollHandler={this.horizontalScrollHandler}
                                                 sidePadded={false}
                                             >
                                                 <ul>
@@ -186,24 +192,33 @@ class Main extends React.Component<MainProps, MainState> {
                                         <div key={key} className="homepage-segment close-friends">
                                             <h3 className="title">{item.title}</h3>
 
-                                            <HorizontalScroller
-                                                height={+cardSizes[item.size][1] * 16 + 20} // NOTE: add 20px for text caption
-                                                scrollHandler={this.horizontalScrollHandler}
-                                                sidePadded={true}
-                                            >
-                                                <ul>
-                                                    { item.data.map((item2: any, key2: number) => (
-                                                        <li key={key2}>
-                                                            <FriendCard
-                                                                name={item2.displayName}
-                                                                imagePath={removeLastSlash(apiService.apiBasePath) + item2.imagePath}
-                                                                isURL={true}
-                                                                urlPath={`contact-details/${item2.username}`}
-                                                            />
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </HorizontalScroller>
+                                            { item.data.length > 0 ? (
+                                                <HorizontalScroller
+                                                    height={+cardSizes[item.size][1] * 16 + 20} // NOTE: add 20px for text caption
+                                                    // scrollHandler={this.horizontalScrollHandler}
+                                                    sidePadded={true}
+                                                >
+                                                    <ul>
+                                                        { item.data.map((item2: any, key2: number) => (
+                                                            <li key={key2}>
+                                                                <FriendCard
+                                                                    name={item2.displayName}
+                                                                    // imagePath={removeLastSlash(apiService.apiBasePath) + item2.imagePath}
+                                                                    imagePath={item2.imagePath}
+                                                                    isURL={true}
+                                                                    urlPath={`contact-details/${item2.username}`}
+                                                                />
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </HorizontalScroller>
+                                            ) : (
+                                                <div className="no-friend">
+                                                    Add some contacts to share these gift with!
+                                                    <RoundedButton text={'Add New Contact'} onClick={this.addNewContact} />
+                                                </div>
+                                            )}
+
                                         </div>
                                     );
                                 default:
@@ -213,7 +228,7 @@ class Main extends React.Component<MainProps, MainState> {
 
                                             <HorizontalScroller
                                                 height={+cardSizes[item.size][1] * 16 + 20} // NOTE: add 20px for text caption
-                                                scrollHandler={this.horizontalScrollHandler}
+                                                // scrollHandler={this.horizontalScrollHandler}
                                                 sidePadded={true}
                                             >
                                                 <ul>
@@ -322,6 +337,18 @@ const MainWrapper = styled('div')<{isFlex?: boolean}>`
             padding: 0 ${gaps.Common};
             font-size: ${fontSizes.XLarge};
             font-weight: 700;
+        }
+        
+        & .no-friend {
+            display: flex;
+            padding: ${gaps.Common};
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            
+            & .rounded-button {
+                margin-top: ${gaps.Small};
+            }
         }
         
         & li {

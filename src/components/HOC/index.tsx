@@ -30,6 +30,7 @@ const withMeiosis = <P extends WithMeiosisProps>(Component: React.ComponentType<
     // class WithMeiosis extends React.Component<Subtract<P, WithMeiosisProps>, GlobalStateInitialType> {
     class WithMeiosis extends React.Component<P & WithMeiosisProps & AnyProps, GlobalStateInitialType> {
         private _isMounted: boolean;
+        private unlisten: any;
 
         constructor(props: P) {
             super(props);

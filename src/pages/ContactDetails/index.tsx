@@ -7,10 +7,9 @@ import {apiService} from "../../services/api";
 import { colors, gaps } from "../../contants/layout";
 import {routes} from "../../contants/routes";
 
-import RoundedButton from "../../components/Buttons";
 import ContactPanel from '../../components/ContactPanel';
-// import ImageCard from "../../components/ImageCard";
-// import FriendCard from "../../components/FriendCard";
+import {setSessionStorage} from "../../helpers";
+import {sessionStorageKey} from "../../contants/app";
 
 
 
@@ -93,6 +92,10 @@ class ContactDetails extends React.Component<ContactDetailsProps, ContactDetails
     };
 
     onAddContactSuccess = (data: any) => {
+        const {globalActions} = this.props;
+        globalActions.updateUserInfoByKey('friends', data.result.friends);
+        setSessionStorage(sessionStorageKey.user, data.result);
+
         // NOTE: update data success, so let's upload photo now
         const {
             newFriendNo,
@@ -118,26 +121,11 @@ class ContactDetails extends React.Component<ContactDetailsProps, ContactDetails
         apiService.ApiCall.AddContactPhoto({
             fileObj: friendPhotoDom.files[0],
             friendNo: newFriendNo,
+            onSuccess: (data: any) => {
+                globalActions.updateUserInfoByKey('friends', data.result.userInfo.friends);
+                setSessionStorage(sessionStorageKey.user, data.result.userInfo);
+            }
         })
-
-
-        //var formData = new FormData();
-        // formData.append('cardDesignImage', fileDom.files[0]);
-
-        /*
-        fetch('/api-admin/card-design/upload-image/' + cardDesignId, {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'cache-control': 'no-cache',
-            },
-            mode: 'cors',
-            body: formData
-        })
-            .then(res => res.json())
-            .then(data => { console.log(data) })
-            .catch(err => { console.log(err) });
-        */
 
         // this.redirectToFriend();
     };
@@ -163,16 +151,18 @@ class ContactDetails extends React.Component<ContactDetailsProps, ContactDetails
                 <ContactDetailsWrapper className="contact-screen">
                     <h2>Contact details</h2>
 
-                    <ContactPanel
-                        hasFriendInfo={hasFriendInfo}
-                        friendName={friendInfo.displayName}
-                        friendNo={friendInfo.username}
-                        friendDOB={friendInfo.dob}
-                        friendImagePath={friendInfo.imagePath}
-                        buttonText={'Edit Contact'}
-                        onClick={this.saveContact}
-                        onFileChange={this.fileInputChange}
-                    />
+                    {!!friendInfo.username ? (
+                        <ContactPanel
+                            hasFriendInfo={hasFriendInfo}
+                            friendName={friendInfo.displayName}
+                            friendNo={friendInfo.username}
+                            friendDOB={friendInfo.dob}
+                            friendImagePath={friendInfo.imagePath}
+                            buttonText={'Edit Contact'}
+                            onClick={this.saveContact}
+                            onFileChange={this.fileInputChange}
+                        />
+                    ) : null}
                 </ContactDetailsWrapper>
             </PageWithMenu>
         );

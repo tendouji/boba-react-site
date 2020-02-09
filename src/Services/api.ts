@@ -300,6 +300,7 @@ const apiService = {
                         friendName: opts.friendName,
                         friendDOB: opts.friendDOB,
                         friendPhoto: opts.friendPhoto,
+                        ...(!!opts.isAdd ? {isAdd: opts.isAdd} : {})
                     },
                 }).then((response: any) => !!response.error ? onError(response) : onSuccess(response)
                 ).catch((error: any) => onError(error));

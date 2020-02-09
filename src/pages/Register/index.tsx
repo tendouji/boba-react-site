@@ -54,10 +54,12 @@ class Register extends React.Component<RegisterProps, RegisterState> {
     componentDidMount() {
         const { globalStates } = this.props;
 
-        this.setState({
-            linkId: globalStates!.shareInfo.code,
-            giftImage: globalStates!.shareInfo.metadata.voucherData.campaignImagePath,
-        });
+        if(!!globalStates!.shareInfo.isShare) { // NOTE: has share data
+            this.setState({
+                linkId: globalStates!.shareInfo.code,
+                giftImage: globalStates!.shareInfo.metadata.voucherData.campaignImagePath,
+            });
+        }
     };
 
     clickHandler = () => {
@@ -126,7 +128,7 @@ class Register extends React.Component<RegisterProps, RegisterState> {
         const { history } = this.props;
 
         if(+data.code === 200) {
-            setSessionStorage(sessionStorageKey.user, JSON.stringify(data.result));
+            setSessionStorage(sessionStorageKey.user, data.result);
 
             history.push({
                 pathname: routes.HOME,
@@ -209,7 +211,7 @@ const RegisterWrapper = styled.div`
     height: 100%;
     justify-content: center;
     align-items: center;
-    // background: url(${BGCurve}) center top / contain no-repeat;
+    background: url(${BGCurve}) center top / contain no-repeat;
     
     & .rounded-panel {
         padding: 0 ${gaps.Common} ${gaps.Common};

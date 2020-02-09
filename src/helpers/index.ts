@@ -16,7 +16,7 @@ const maskPhone = (phone: string) => {
 
 const removeLastSlash = (url: string) => url[url.length-1] === '/' ? url.substr(0, url.length-1) : url;
 
-const setSessionStorage = (key: string, obj: string) => sessionStorage.setItem(key, obj);
+const setSessionStorage = (key: string, obj: any) => sessionStorage.setItem(key, JSON.stringify(obj));
 const getSessionStorage = (key: string): string => sessionStorage.getItem(key) || '{}';
 const clearSessionStorageByKey = (key: string) => sessionStorage.removeItem(key);
 
@@ -32,6 +32,7 @@ const checkImageURL = (urlPath: string) => {
         img.src = urlPath;
     });
 };
+
 
 
 export {

@@ -1,11 +1,17 @@
 /** TODO:
  * - OTP api
  * - if loggedin, LoginPage RegisterPage to go to Main page
- * - check after redeem, if voucher code is active or inactive
  * - add preloader / check all error handling for api and form validation
- * - clear all console.log
+ * - after add contact detect to go to share page or not
+ *
  * - check how does voucherify barcode works
+ * - check after redeem, if voucher code is active or inactive
+ * - create friend list page
+ * - create voucher list page
+ * - create logout
+ *
  * - snackbarInfo to be grouped?
+ * - clear all console.log
  **/
 
 import React from 'react';
@@ -14,7 +20,10 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
+    withRouter,
+    RouteComponentProps,
 } from "react-router-dom";
+import {StaticContext} from "react-router";
 
 import SnackBar from './components/SnackBar';
 import withMeiosis, {WithMeiosisProps} from "./components/HOC";
@@ -61,7 +70,7 @@ class App extends React.Component<AppProps, AppState> {
 
         return (
             <Router>
-                <ScreenWrapper className="app-screen">
+                <Screen>
                     <Switch>
                         <Route exact path={routes.HOME} component={Main} />
                         <Route path={routes.HOME + ':linkId'} component={RoutingComponent} />
@@ -75,7 +84,7 @@ class App extends React.Component<AppProps, AppState> {
                         CTAButtonLabel={globalStates!.snackBarCTAButtonLabel}
                         onCTAClick={globalStates!.snackBarCTAClickHandler}
                     />
-                </ScreenWrapper>
+                </Screen>
             </Router>
         );
     }
@@ -103,6 +112,32 @@ const RoutingComponent: React.FC<{match: any}> = ({match}) => (<>
 export default withMeiosis(App);
 
 
+
+
+class ScreenBase extends React.Component<WithMeiosisProps & RouteComponentProps<any, StaticContext, any>> {
+    private unlisten: any;
+
+    componentWillMount() {
+        const {history} = this.props;
+
+        this.unlisten = history.listen(() => {
+            const { globalActions } = this.props;
+            globalActions.updateSnackBar({ isShown: false, message: '' });
+        });
+    }
+
+    componentWillUnmount() {
+        this.unlisten();
+    }
+
+    render() {
+        const {children} = this.props;
+        return <ScreenWrapper className="app-screen">{children}</ScreenWrapper>;
+    }
+}
+
+const Screen = withRouter(withMeiosis(ScreenBase));
+
 const ScreenWrapper = styled.div`
     position: relative;
     height: 100%;
@@ -115,5 +150,5 @@ const ScreenWrapper = styled.div`
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     background-color: ${colors.White};
     
-    // opacity: 0.2;
+    // opacity: 0.1;
 `;

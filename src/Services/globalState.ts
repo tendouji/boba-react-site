@@ -62,6 +62,7 @@ export type GlobalActionType = {
     updateLoggedSession: (val: boolean) => void,
     updateCurPage: (val: PageType) => void,
     updateUserInfo: (info: UserInfoType) => void,
+    updateUserInfoByKey: (key: string, info: any) => void,
     updateShareInfo: (info: ShareInfoType) => void,
 }
 
@@ -132,6 +133,16 @@ const globalState: any = {
             updateUserInfo: (info: UserInfoType) => {
                 update((state: GlobalStateInitialType) => {
                     state.userInfo = info;
+                    return state;
+                });
+            },
+            updateUserInfoByKey: (key: string, info: any) => {
+                update((state: GlobalStateInitialType) => {
+                    const newState = {
+                        ...state.userInfo,
+                        [key]: info,
+                    };
+                    state.userInfo = newState;
                     return state;
                 });
             },

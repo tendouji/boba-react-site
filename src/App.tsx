@@ -72,10 +72,12 @@ class App extends React.Component<AppProps, AppState> {
         return (
             <Router>
                 <Screen>
+                    {/*
                     <Switch>
                         <Route exact path={routes.HOME} component={Main} />
                         <Route path={routes.HOME + ':linkId'} component={RoutingComponent} />
                     </Switch>
+                    */}
 
                     <SnackBar
                         isShown={!!globalStates!.showSnackBar}
@@ -91,6 +93,7 @@ class App extends React.Component<AppProps, AppState> {
     }
 }
 
+/*
 const RoutingComponent: React.FC<{match: any}> = ({match}) => (<>
     <Switch>
         <Route path={routes.SIGNIN} component={Login} />
@@ -109,7 +112,7 @@ const RoutingComponent: React.FC<{match: any}> = ({match}) => (<>
         }} {...props} />} />
     </Switch>
 </>);
-
+*/
 export default withMeiosis(App);
 
 

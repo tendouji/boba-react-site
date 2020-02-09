@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/boba-react-site/static/css/main.99b90969.chunk.css",
+    "main.js": "/boba-react-site/static/js/main.73c00abc.chunk.js",
+    "main.js.map": "/boba-react-site/static/js/main.73c00abc.chunk.js.map",
+    "runtime-main.js": "/boba-react-site/static/js/runtime-main.2b4f445c.js",
+    "runtime-main.js.map": "/boba-react-site/static/js/runtime-main.2b4f445c.js.map",
+    "static/js/2.114990e0.chunk.js": "/boba-react-site/static/js/2.114990e0.chunk.js",
+    "static/js/2.114990e0.chunk.js.map": "/boba-react-site/static/js/2.114990e0.chunk.js.map",
+    "index.html": "/boba-react-site/index.html",
+    "precache-manifest.f39bfefd6a0b2cf1a9f9f87fe2ee4c16.js": "/boba-react-site/precache-manifest.f39bfefd6a0b2cf1a9f9f87fe2ee4c16.js",
+    "service-worker.js": "/boba-react-site/service-worker.js",
+    "static/css/main.99b90969.chunk.css.map": "/boba-react-site/static/css/main.99b90969.chunk.css.map",
+    "static/js/2.114990e0.chunk.js.LICENSE": "/boba-react-site/static/js/2.114990e0.chunk.js.LICENSE",
+    "static/media/bg.png": "/boba-react-site/static/media/bg.83ef7d5d.png",
+    "static/media/gift-detail-sample.png": "/boba-react-site/static/media/gift-detail-sample.c9943579.png",
+    "static/media/placeholder-voucher.png": "/boba-react-site/static/media/placeholder-voucher.13ef44b9.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.2b4f445c.js",
+    "static/js/2.114990e0.chunk.js",
+    "static/css/main.99b90969.chunk.css",
+    "static/js/main.73c00abc.chunk.js"
+  ]
+}

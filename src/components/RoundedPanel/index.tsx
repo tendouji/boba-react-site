@@ -5,7 +5,7 @@ import {
     boxShadow,
     colors,
     gaps
-} from "../../contants/layout";
+} from "../../constants/layout";
 
 
 type RoundedPanelProps = {

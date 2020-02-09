@@ -6,9 +6,9 @@ import {
     colors,
     fontSizes,
     gaps
-} from "../../contants/layout";
-import {otpResendTimeout} from "../../contants/app";
-import {pinVerifyInstruction} from "../../contants/text";
+} from "../../constants/layout";
+import {otpResendTimeout} from "../../constants/app";
+import {pinVerifyInstruction} from "../../constants/text";
 import {maskPhone} from "../../helpers";
 
 import RoundedButton from "../Buttons";

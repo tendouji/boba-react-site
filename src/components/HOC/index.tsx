@@ -1,11 +1,12 @@
 import React from "react";
 import flyd from "flyd";
-import globalState, {GlobalStateInitialType} from "../../services/globalState";
 import merge from "mergerino";
-import {apiService} from "../../services/api";
-import {routes} from "../../contants/routes";
-import {pageComponentList, sessionStorageKey} from "../../contants/app";
+
+import {routes} from "../../constants/routes";
+import {pageComponentList, sessionStorageKey} from "../../constants/app";
 import {getSessionStorage} from "../../helpers";
+import globalState, {GlobalStateInitialType} from "../../services/globalState";
+import {apiService} from "../../services/api";
 
 
 const update: flyd.Stream<unknown> = flyd.stream();

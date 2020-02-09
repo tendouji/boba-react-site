@@ -1,5 +1,5 @@
 import React from "react";
-import {colors} from "../../contants/layout";
+import {colors} from "../../constants/layout";
 
 export const IconDining: React.FC<{color?: string, width?: number}> = ({color, width}) => (<>
     <svg className="icon-dining asset-svg"

@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+import { Preloader as IconPreloader } from "../../assets";
 import {
     colors,
     fontSizes,
     gaps
-} from "../../contants/layout";
-import { Preloader as IconPreloader } from "../../assets";
+} from "../../constants/layout";
 
 
 interface PreloaderProps {

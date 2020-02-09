@@ -10,15 +10,16 @@ import {
     fontSizes,
     gaps,
     mediaBreakpoints
-} from "../../contants/layout";
-import {routes} from "../../contants/routes";
-import {categoryLinks, snackBarShowDelay} from "../../contants/app";
+} from "../../constants/layout";
+import {routes} from "../../constants/routes";
+import {categoryLinks, snackBarShowDelay} from "../../constants/app";
+import {removeLastSlash} from "../../helpers";
+
+import withMeiosis, {WithMeiosisProps} from "../../components/HOC";
 import PageWithMenu from "../../components/PageWithMenu";
 import HorizontalScroller from "../../components/HorizontalScroller";
-import withMeiosis, {WithMeiosisProps} from "../../components/HOC";
 import ImageCard from "../../components/ImageCard";
 import SearchBar from '../../components/SearchBar';
-import {removeLastSlash} from "../../helpers";
 import FriendCard from "../../components/FriendCard";
 import Preloader from '../../components/Preloader';
 import RoundedButton from "../../components/Buttons";

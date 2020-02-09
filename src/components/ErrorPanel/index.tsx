@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import {BGCurve} from '../../assets';
+import {fontSizes, gaps} from "../../constants/layout";
+import {routes} from "../../constants/routes";
+
 import RoundedButton from "../../components/Buttons";
 import SearchBar from "../../components/SearchBar";
-
-import {fontSizes, gaps} from "../../contants/layout";
-import {routes} from "../../contants/routes";
-import {BGCurve} from '../../assets';
 
 
 

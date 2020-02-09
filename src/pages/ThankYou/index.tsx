@@ -1,9 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import PageWithMenu from "../../components/PageWithMenu";
-import withMeiosis, {WithMeiosisProps} from "../../components/HOC";
-import {apiService} from "../../services/api";
 import {
     borderRadius, buttonSizes,
     colors,
@@ -11,11 +8,15 @@ import {
     elementSizes,
     fontSizes,
     gaps,
-} from "../../contants/layout";
+} from "../../constants/layout";
+import {apiService} from "../../services/api";
+import {removeLastSlash} from "../../helpers";
+
+import withMeiosis, {WithMeiosisProps} from "../../components/HOC";
+import PageWithMenu from "../../components/PageWithMenu";
 import RoundedButton from "../../components/Buttons";
 import Preloader from "../../components/Preloader";
 import {Imager} from "../../components/ImageCard";
-import {removeLastSlash} from "../../helpers";
 
 
 interface ThankYouProps extends WithMeiosisProps {

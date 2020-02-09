@@ -1,5 +1,5 @@
 import React from "react";
-import {colors} from "../../contants/layout";
+import {colors} from "../../constants/layout";
 
 export const IconGift: React.FC<{color?: string, width?: number}> = ({color, width}) => (<>
     <svg className="icon-calendar asset-svg"

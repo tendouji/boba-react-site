@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import {elementSizes} from "../../constants/layout";
 import MenuBar from "../MenuBar";
-import {elementSizes} from "../../contants/layout";
 
 const PageWithMenu: React.FC<{title?: string, children: any}> = ({title, children}) => {
     return (

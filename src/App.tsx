@@ -25,6 +25,9 @@ import {
 } from "react-router-dom";
 import {StaticContext} from "react-router";
 
+import {colors} from "./constants/layout";
+import {routes} from "./constants/routes";
+
 import withMeiosis, {WithMeiosisProps} from "./components/HOC";
 import SnackBar from './components/SnackBar';
 
@@ -33,8 +36,6 @@ import Register from "./pages/Register";
 import Main from "./pages/Main";
 import BrandDetails from './pages/BrandDetails';
 import GiftDetails from './pages/GiftDetails';
-import {colors} from "./contants/layout";
-import {routes} from "./contants/routes";
 import ShareGift from './pages/ShareGift';
 import AddContact from './pages/AddContact';
 import ThankYou from './pages/ThankYou';

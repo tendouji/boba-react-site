@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import withMeiosis, {WithMeiosisProps} from "../../components/HOC";
-import PageWithMenu from "../../components/PageWithMenu";
 import {apiService} from "../../services/api";
 import {
     borderRadius,
@@ -12,12 +10,14 @@ import {
     commonStyle,
     fontSizes,
     gaps,
-} from "../../contants/layout";
-import {routes} from "../../contants/routes";
-
-import ContactPanel from "../../components/ContactPanel";
+} from "../../constants/layout";
+import {routes} from "../../constants/routes";
+import {sessionStorageKey} from "../../constants/app";
 import {setSessionStorage} from "../../helpers";
-import {sessionStorageKey} from "../../contants/app";
+
+import withMeiosis, {WithMeiosisProps} from "../../components/HOC";
+import PageWithMenu from "../../components/PageWithMenu";
+import ContactPanel from "../../components/ContactPanel";
 
 
 

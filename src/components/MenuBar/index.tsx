@@ -7,8 +7,8 @@ import {
     commonStyle,
     elementSizes,
     fontSizes
-} from "../../contants/layout";
-import {menuBarLinks} from "../../contants/app";
+} from "../../constants/layout";
+import {menuBarLinks} from "../../constants/app";
 import withMeiosis, {WithMeiosisProps} from "../HOC";
 
 

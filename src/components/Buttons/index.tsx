@@ -4,7 +4,7 @@ import {
     buttonSizes,
     colors,
     fontSizes,
-} from "../../contants/layout";
+} from "../../constants/layout";
 
 
 type RoundedButtonType = {

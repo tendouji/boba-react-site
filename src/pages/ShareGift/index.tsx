@@ -1,9 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import PageWithMenu from "../../components/PageWithMenu";
-import withMeiosis, {WithMeiosisProps} from "../../components/HOC";
-import {apiService} from "../../services/api";
 import {
     borderRadius, buttonSizes,
     cardSizeLabels,
@@ -12,16 +9,20 @@ import {
     commonStyle,
     fontSizes,
     gaps,
-} from "../../contants/layout";
-import HorizontalScroller from "../../components/HorizontalScroller";
-import ImageCard from "../../components/ImageCard";
-import {FriendCardHorizontal} from "../../components/FriendCard";
-import {sessionStorageKey, socialShareList} from "../../contants/app";
+} from "../../constants/layout";
+import {sessionStorageKey, socialShareList} from "../../constants/app";
 import {
     clearSessionStorageByKey,
     getSessionStorage,
     setSessionStorage
 } from "../../helpers";
+import {apiService} from "../../services/api";
+
+import withMeiosis, {WithMeiosisProps} from "../../components/HOC";
+import PageWithMenu from "../../components/PageWithMenu";
+import HorizontalScroller from "../../components/HorizontalScroller";
+import ImageCard from "../../components/ImageCard";
+import {FriendCardHorizontal} from "../../components/FriendCard";
 import Preloader from "../../components/Preloader";
 
 

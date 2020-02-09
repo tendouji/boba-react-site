@@ -2,9 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import JsBarcode from 'jsbarcode';
 
-import PageWithMenu from "../../components/PageWithMenu";
-import withMeiosis, {WithMeiosisProps} from "../../components/HOC";
-import {apiService} from "../../services/api";
+import {GiftCorner} from '../../assets';
 import {
     borderRadius,
     cardSizeLabels,
@@ -14,14 +12,17 @@ import {
     elementSizes,
     fontSizes,
     gaps,
-} from "../../contants/layout";
-import {GiftCorner} from '../../assets';
+} from "../../constants/layout";
+import {routes} from "../../constants/routes";
+import {removeLastSlash} from "../../helpers";
+import {apiService} from "../../services/api";
+
+import withMeiosis, {WithMeiosisProps} from "../../components/HOC";
+import PageWithMenu from "../../components/PageWithMenu";
 import HorizontalScroller from "../../components/HorizontalScroller";
-import {routes} from "../../contants/routes";
 import RoundedButton from "../../components/Buttons";
 import FriendCard from "../../components/FriendCard";
 import Preloader from "../../components/Preloader";
-import {removeLastSlash} from "../../helpers";
 import {Imager} from "../../components/ImageCard";
 
 

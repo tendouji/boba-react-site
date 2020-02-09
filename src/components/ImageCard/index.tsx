@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+
+import {ProductDefault} from '../../assets';
 import {
     borderRadius,
     cardSizeLabels,
     cardSizes,
     colors,
-} from "../../contants/layout";
-import {ProductDefault} from '../../assets';
+} from "../../constants/layout";
 import {checkImageURL} from "../../helpers";
 
 

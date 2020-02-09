@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import {
     borderRadius,
     buttonSizes,
@@ -7,10 +8,9 @@ import {
     commonStyle,
     elementSizes,
     fontSizes, gaps
-} from "../../contants/layout";
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+} from "../../constants/layout";
 import RoundedButton from "../Buttons";
-import {snackBarLifeSpan} from "../../contants/app";
+import {snackBarLifeSpan} from "../../constants/app";
 
 
 interface SnackBarProps {

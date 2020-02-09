@@ -1,5 +1,5 @@
 import React from "react";
-import {colors} from "../../contants/layout";
+import {colors} from "../../constants/layout";
 
 export const Preloader: React.FC<{color?: string, width?: number}> = ({color, width = 200}) => (<>
     <svg className="icon-calendar asset-svg"

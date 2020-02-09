@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import styled from "styled-components";
 
+import {ProfileDefault} from "../../assets";
 import {
     cardSizeLabels,
     cardSizes,
@@ -9,8 +10,7 @@ import {
     fontSizes,
     gaps,
     commonStyle, borderRadius
-} from "../../contants/layout";
-import {ProfileDefault} from "../../assets";
+} from "../../constants/layout";
 import {checkImageURL} from "../../helpers";
 
 

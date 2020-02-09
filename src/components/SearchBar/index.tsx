@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+import SearchIcon from '@material-ui/icons/Search';
 import {
     borderRadius,
     colors,
     elementSizes,
     fontSizes, gaps
-} from "../../contants/layout";
-import SearchIcon from '@material-ui/icons/Search';
+} from "../../constants/layout";
 
 
 type SearchBarProps = {

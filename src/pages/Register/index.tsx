@@ -3,19 +3,21 @@ import {Link} from "react-router-dom";
 import styled from 'styled-components';
 
 import AccountCircleOutlined from '@material-ui/icons/AccountCircleOutlined';
+
+import {BGCurve} from '../../assets';
+import {gaps} from "../../constants/layout";
+import {routes} from "../../constants/routes";
+import {sessionStorageKey} from "../../constants/app";
+import {setSessionStorage} from "../../helpers";
+import {apiService} from "../../services/api";
+
+import withMeiosis, {WithMeiosisProps} from "../../components/HOC";
 import AuthForm from "../../components/AuthForm";
 import IconTextField from '../../components/IconTextField';
 import RoundedPanel from "../../components/RoundedPanel";
 import PinInput from "../../components/PinInput";
 import RoundedButton from "../../components/Buttons";
 
-import {gaps} from "../../contants/layout";
-import {routes} from "../../contants/routes";
-import {apiService} from "../../services/api";
-import {BGCurve} from '../../assets';
-import withMeiosis, {WithMeiosisProps} from "../../components/HOC";
-import {setSessionStorage} from "../../helpers";
-import {sessionStorageKey} from "../../contants/app";
 
 
 interface RegisterProps extends WithMeiosisProps {

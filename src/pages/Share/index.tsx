@@ -4,18 +4,18 @@ import styled from 'styled-components';
 // import RoundedPanel from "../../components/RoundedPanel";
 // import RoundedButton from "../../components/Buttons";
 
+import {BGCurve} from '../../assets';
+import {borderRadius, colors, gaps, elementSizes} from "../../constants/layout";
+import {routes} from "../../constants/routes";
 import {apiService} from "../../services/api";
 import {GlobalInitialState, ShareInfoType} from "../../services/globalState";
-import {BGCurve} from '../../assets';
-import {borderRadius, colors, gaps, elementSizes} from "../../contants/layout";
-import {routes} from "../../contants/routes";
+import {removeLastSlash} from "../../helpers";
 
 import withMeiosis, {WithMeiosisProps} from "../../components/HOC";
 import Preloader from "../../components/Preloader";
 import ErrorPanel from "../../components/ErrorPanel";
 import {FriendCardHorizontal} from "../../components/FriendCard";
 import {Imager} from "../../components/ImageCard";
-import {removeLastSlash} from "../../helpers";
 import RoundedButton from "../../components/Buttons";
 
 

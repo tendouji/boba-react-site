@@ -13,14 +13,14 @@ import {
     elementSizes,
     fontSizes,
     gaps,
-} from "../../contants/layout";
-import {brandDetailsLinks} from "../../contants/app";
+} from "../../constants/layout";
+import {brandDetailsLinks} from "../../constants/app";
+import {routes} from "../../constants/routes";
+import {removeLastSlash} from "../../helpers";
 
 import withMeiosis, {WithMeiosisProps} from "../../components/HOC";
 import PageWithMenu from "../../components/PageWithMenu";
 import RoundedButton from "../../components/Buttons";
-import {removeLastSlash} from "../../helpers";
-import {routes} from "../../contants/routes";
 import Preloader from "../../components/Preloader";
 import {Imager} from "../../components/ImageCard";
 

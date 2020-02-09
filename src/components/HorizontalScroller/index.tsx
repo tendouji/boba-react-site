@@ -1,6 +1,6 @@
 import React  from 'react';
 import styled from 'styled-components';
-import {commonStyle, gaps} from "../../contants/layout";
+import {commonStyle, gaps} from "../../constants/layout";
 
 
 type HorizontalScrollerProps = {

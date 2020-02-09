@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import AddIcon from '@material-ui/icons/Add';
 
@@ -10,7 +10,7 @@ import {
     cardSizeLabels,
     borderRadius,
     commonStyle
-} from "../../contants/layout";
+} from "../../constants/layout";
 
 import RoundedButton from "../../components/Buttons";
 import {ProfileCard} from "../FriendCard";

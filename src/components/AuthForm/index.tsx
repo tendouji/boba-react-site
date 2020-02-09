@@ -2,10 +2,17 @@ import React from "react";
 import styled from "styled-components";
 
 import {Logo} from '../../assets';
-import {elementSizes, gaps, mediaBreakpoints, borderRadius, colors, buttonSizes} from "../../contants/layout";
-import {Imager} from "../ImageCard";
+import {
+    elementSizes,
+    gaps,
+    mediaBreakpoints,
+    borderRadius,
+    colors,
+    buttonSizes
+} from "../../constants/layout";
 import {removeLastSlash} from "../../helpers";
 import {apiService} from "../../services/api";
+import {Imager} from "../ImageCard";
 
 
 type AuthFormType = {

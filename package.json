@@ -2,6 +2,7 @@
   "name": "boba-web",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://tendouji.github.io/boba-react-site",
   "dependencies": {
     "@m3-moretv/react-code-input": "^1.1.6",
     "@material-ui/core": "^4.8.3",
@@ -29,16 +30,19 @@
     "@types/react-dom": "^16.9.4",
     "@types/react-router": "^5.1.4",
     "@types/react-router-dom": "^5.1.3",
-    "@types/styled-components": "^4.4.2"
+    "@types/styled-components": "^4.4.2",
+    "gh-pages": "^2.2.0"
   },
   "engines": {
     "node": "10.x"
-  } ,
+  },
   "scripts": {
-    "start": "PORT=3301 REACT_APP_API_BASE_PATH=boba-gift-poc.herokuapp.com react-scripts start",
+    "start": "PORT=3302 REACT_APP_API_BASE_PATH=boba-gift-poc.herokuapp.com react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
